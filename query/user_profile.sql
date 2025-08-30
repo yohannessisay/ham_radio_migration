@@ -1,0 +1,23 @@
+CREATE TABLE UserProfile (
+    id TEXT PRIMARY KEY,
+    uid TEXT,
+    firstName TEXT,
+    lastName TEXT,
+    nameSearchIndex TEXT[],
+    callSign TEXT,
+    callsignSearchIndex TEXT[],
+    email TEXT,
+    phoneNumber TEXT,
+    country TEXT,
+    state TEXT,
+    stateLongName TEXT,
+    city TEXT,
+    address TEXT,
+    gridSquare TEXT,
+    provideId TEXT,
+    bio TEXT,
+    cqZone INTEGER,
+    ituZone INTEGER,
+    coordinates JSONB,
+    timestamp TIMESTAMP
+);
