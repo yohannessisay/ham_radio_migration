@@ -7,7 +7,7 @@ export class LogBook extends Model {}
 LogBook.init(
   {
     firebase_id: { type: DataTypes.STRING, primaryKey: true },
-    user_firebase_id: { type: DataTypes.STRING, references: { model: UserProfile, key: "firebase_id" } },
+    uid: { type: DataTypes.STRING, references: { model: UserProfile, key: "uid" } },
     name: { type: DataTypes.STRING },
     coordinates: { type: DataTypes.JSONB },
     timestamp: { type: DataTypes.DATE },

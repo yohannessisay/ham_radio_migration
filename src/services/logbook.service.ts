@@ -28,7 +28,7 @@ class LogBookService {
 
     const logs = snapshot.docs.map((doc) => ({
       firebase_id: doc.id,
-      user_firebase_id: (doc.data() as any).uid || (doc.data() as any).userId || null,
+      uid: (doc.data() as any).uid || (doc.data() as any).userId || null,
       name: (doc.data() as any).name || null,
       myAntenna: (doc.data() as any).myAntenna || null,
       myRadio: (doc.data() as any).myRadio || null,
@@ -36,9 +36,13 @@ class LogBookService {
       coordinates: (doc.data() as any).coordinates || null,
       timestamp: (doc.data() as any).timestamp?.seconds
         ? new Date((doc.data() as any).timestamp.seconds * 1000)
+        : typeof (doc.data() as any).timestamp === "number"
+        ? new Date((doc.data() as any).timestamp)
         : null,
       lastContactTimestamp: (doc.data() as any).lastContactTimestamp?.seconds
         ? new Date((doc.data() as any).lastContactTimestamp.seconds * 1000)
+        : typeof (doc.data() as any).lastContactTimestamp === "number"
+        ? new Date((doc.data() as any).lastContactTimestamp)
         : null,
     }));
 
@@ -50,6 +54,16 @@ class LogBookService {
 
     const inserted = await LogBook.bulkCreate(logs, {
       ignoreDuplicates: true,
+      updateOnDuplicate: [
+        "uid",
+        "name",
+        "myAntenna",
+        "myRadio",
+        "contactCount",
+        "coordinates",
+        "timestamp",
+        "lastContactTimestamp",
+      ],
     });
     return inserted.length;
   }

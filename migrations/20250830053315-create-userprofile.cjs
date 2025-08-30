@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('UserProfile', {
-      firebase_id: { type: Sequelize.STRING, primaryKey: true },
+      uid: { type: Sequelize.STRING, primaryKey: true },
       firstName: { type: Sequelize.STRING },
       lastName: { type: Sequelize.STRING },
       callSign: { type: Sequelize.STRING },
@@ -24,6 +24,7 @@ module.exports = {
       createdAt: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal('NOW()') },
       updatedAt: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal('NOW()') },
     });
+    await queryInterface.addIndex('UserProfile', ['callSign']);
   },
 
   async down(queryInterface) {

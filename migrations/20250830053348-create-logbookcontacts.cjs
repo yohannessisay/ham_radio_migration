@@ -4,9 +4,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('LogBookContacts', {
       firebase_id: { type: Sequelize.STRING, primaryKey: true },
-      user_firebase_id: {
+      uid: {
         type: Sequelize.STRING,
-        references: { model: 'UserProfile', key: 'firebase_id' },
+        references: { model: 'UserProfile', key: 'uid' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
       },
@@ -34,8 +34,10 @@ module.exports = {
       userMode: { type: Sequelize.STRING },
       contactTimeStamp: { type: Sequelize.DATE },
       timestamp: { type: Sequelize.DATE },
+      date: { type: Sequelize.DATE },
       coordinates: { type: Sequelize.JSONB },
       nameSearchIndex: { type: Sequelize.ARRAY(Sequelize.STRING) },
+      myNameSearchIndex: { type: Sequelize.ARRAY(Sequelize.STRING) },
       callSignSearchIndex: { type: Sequelize.ARRAY(Sequelize.STRING) },
       active: { type: Sequelize.BOOLEAN },
       notes: { type: Sequelize.TEXT },
