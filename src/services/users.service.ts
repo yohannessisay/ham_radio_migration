@@ -121,8 +121,7 @@ class UserService {
 
     return users;
   }
-
-  // Insert users into Postgres
+ 
   async insertIntoPostgres(users: any[]) {
     if (!users.length) return 0;
 
@@ -131,8 +130,7 @@ class UserService {
     });
     return inserted.length;
   }
-
-  // Full sync method
+ 
   async syncFromFirestore(limitCount = 10000) {
     const users = await this.fetchLatestFromFirestore(limitCount);
     const insertedCount = await this.insertIntoPostgres(users);
