@@ -3,8 +3,8 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('UserProfile', {
-      id: { type: Sequelize.STRING, primaryKey: true },
-      uid: { type: Sequelize.STRING },
+      id: { type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true },
+      firebase_id: { type: Sequelize.STRING, allowNull: false, unique: true },
       firstName: { type: Sequelize.STRING },
       lastName: { type: Sequelize.STRING },
       callSign: { type: Sequelize.STRING },

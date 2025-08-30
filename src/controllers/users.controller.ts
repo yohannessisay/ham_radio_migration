@@ -38,6 +38,22 @@ class UserController {
       return sendError({ reply, error: err, message: "Failed to fetch users" });
     }
   }
+
+    async syncUsers(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const result = await UserService.syncFromFirestore(10000);
+      return reply.send({
+        success: true,
+        message: `Fetched ${result.totalFetched} users and inserted ${result.insertedCount} into Postgres`,
+      });
+    } catch (err: any) {
+      console.error("❌ Sync error:", err);
+      return reply.status(500).send({
+        success: false,
+        message: err.message || "Failed to sync users",
+      });
+    }
+  }
 }
 
 export default new UserController();
