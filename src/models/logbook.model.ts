@@ -6,12 +6,12 @@ export class LogBook extends Model {}
 
 LogBook.init(
   {
-    id: { type: DataTypes.STRING, primaryKey: true },
-    uid: { type: DataTypes.STRING, references: { model: UserProfile, key: "id" } },
+    firebase_id: { type: DataTypes.STRING, primaryKey: true },
+    user_firebase_id: { type: DataTypes.STRING, references: { model: UserProfile, key: "firebase_id" } },
     name: { type: DataTypes.STRING },
     coordinates: { type: DataTypes.JSONB },
-    timestamp: { type: DataTypes.BIGINT },
-    lastContactTimestamp: { type: DataTypes.BIGINT },
+    timestamp: { type: DataTypes.DATE },
+    lastContactTimestamp: { type: DataTypes.DATE },
     contactCount: { type: DataTypes.INTEGER },
     myRadio: { type: DataTypes.STRING },
     myAntenna: { type: DataTypes.STRING },

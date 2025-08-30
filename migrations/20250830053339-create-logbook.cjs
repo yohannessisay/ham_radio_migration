@@ -3,8 +3,13 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('LogBook', {
-      id: { type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true },
-      firebase_id: { type: Sequelize.STRING, allowNull: false, unique: true },
+      firebase_id: { type: Sequelize.STRING, primaryKey: true },
+      user_firebase_id: {
+        type: Sequelize.STRING,
+        references: { model: 'UserProfile', key: 'firebase_id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
       name: { type: Sequelize.STRING },
       myAntenna: { type: Sequelize.STRING },
       myRadio: { type: Sequelize.STRING },

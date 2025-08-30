@@ -1,5 +1,4 @@
-import { sequelize } from "../config/db.config";
-import { UserProfile, LogBook, LogbookContacts } from "../models";
+import { sequelize } from "../config/db.config"; 
 
 async function syncDB() {
   await sequelize.sync({ alter: true }); // automatically updates tables

@@ -5,8 +5,7 @@ export class UserProfile extends Model {}
 
 UserProfile.init(
   {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    firebase_id: { type: DataTypes.STRING, allowNull: false, unique: true },
+    firebase_id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
     firstName: { type: DataTypes.STRING },
     lastName: { type: DataTypes.STRING },
     callSign: { type: DataTypes.STRING },

@@ -7,9 +7,9 @@ export class LogbookContacts extends Model {}
 
 LogbookContacts.init(
   {
-    id: { type: DataTypes.STRING, primaryKey: true },
-    uid: { type: DataTypes.STRING, references: { model: UserProfile, key: "id" } },
-    logBookId: { type: DataTypes.STRING, references: { model: LogBook, key: "id" }, allowNull: true },
+    firebase_id: { type: DataTypes.STRING, primaryKey: true },
+    user_firebase_id: { type: DataTypes.STRING, references: { model: UserProfile, key: "firebase_id" } },
+    logBookId: { type: DataTypes.STRING, references: { model: LogBook, key: "firebase_id" }, allowNull: true },
     myCallSign: { type: DataTypes.STRING },
     profileCallSign: { type: DataTypes.STRING },
     theirCallsign: { type: DataTypes.STRING },
@@ -19,7 +19,9 @@ LogbookContacts.init(
     myNameSearchIndex: { type: DataTypes.ARRAY(DataTypes.STRING) },
     active: { type: DataTypes.BOOLEAN },
     date: { type: DataTypes.DATE },
-    timestamp: { type: DataTypes.BIGINT },
+    timestamp: { type: DataTypes.DATE },
+    coordinates: { type: DataTypes.JSONB },
+    notes: { type: DataTypes.TEXT },
   },
-  { sequelize, tableName: "LogbookContacts" }
+  { sequelize, tableName: "LogBookContacts" }
 );
