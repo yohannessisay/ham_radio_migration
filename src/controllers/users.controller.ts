@@ -1,21 +1,21 @@
+ 
 import { FastifyRequest, FastifyReply } from "fastify";
 import UserService from "../services/users.service.js";
 import { sendSuccess, sendError } from "../utils/responseHandler.js";
-
+import CollectionStructureService from "../services/generate-columns.service.js";
 class UserController {
-  async getStructure(req: FastifyRequest, reply: FastifyReply) {
-    const result = await UserService.getStructure();
-
-    if (result.success) {
+  async getStructure(req: FastifyRequest, reply: FastifyReply) { 
+ const collectionStructure = await CollectionStructureService.getCollectionStructure("LogBookContact");
+    if (collectionStructure) {
       return sendSuccess({
         reply,
-        data: { count: result.data?.length, user: result.data },
-        message: result.message,
+        data: {   structure: collectionStructure },
+        message: "User structure fetched successfully",
       });
     } else {
       return sendError({
         reply,
-        message: result.message,
+        message: "Failed to fetch user structure",
       });
     }
   }

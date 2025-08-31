@@ -1,0 +1,670 @@
+  {
+      "collection": "LogBookContact",
+      "columns": [
+        {
+          "fieldName": "adiImported",
+          "columnName": "adi_imported",
+          "dataType": "BOOLEAN",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "band",
+          "columnName": "band",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "callSignSearchIndex",
+          "columnName": "call_sign_search_index",
+          "dataType": "TEXT[]",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contactTimeStamp",
+          "columnName": "contact_time_stamp",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestId",
+          "columnName": "contest_id",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "country",
+          "columnName": "country",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "date",
+          "columnName": "date",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "distance",
+          "columnName": "distance",
+          "dataType": "DOUBLE PRECISION",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "firebase_id",
+          "columnName": "firebase_id",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "frequency",
+          "columnName": "frequency",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "grid",
+          "columnName": "grid",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "logBook",
+          "columnName": "log_book",
+          "dataType": "JSONB",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "logBookId",
+          "columnName": "log_book_id",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myCallSign",
+          "columnName": "my_call_sign",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myCity",
+          "columnName": "my_city",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myCoordinates",
+          "columnName": "my_coordinates",
+          "dataType": "JSONB",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myCountry",
+          "columnName": "my_country",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myFlagCode",
+          "columnName": "my_flag_code",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myName",
+          "columnName": "my_name",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myProfilePic",
+          "columnName": "my_profile_pic",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myState",
+          "columnName": "my_state",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myStateLongName",
+          "columnName": "my_state_long_name",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "notes",
+          "columnName": "notes",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "power",
+          "columnName": "power",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "profileCallSign",
+          "columnName": "profile_call_sign",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "rstRCVD",
+          "columnName": "rst_r_c_v_d",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "rstSent",
+          "columnName": "rst_sent",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "state",
+          "columnName": "state",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "stateLongName",
+          "columnName": "state_long_name",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "tags",
+          "columnName": "tags",
+          "dataType": "TEXT[]",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirCallsign",
+          "columnName": "their_callsign",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirCoordinates",
+          "columnName": "their_coordinates",
+          "dataType": "JSONB",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirCountry",
+          "columnName": "their_country",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirName",
+          "columnName": "their_name",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirState",
+          "columnName": "their_state",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "time",
+          "columnName": "time",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "timestamp",
+          "columnName": "timestamp",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "uid",
+          "columnName": "uid",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "updatedAt",
+          "columnName": "updated_at",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "userGrid",
+          "columnName": "user_grid",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "userMode",
+          "columnName": "user_mode",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myAntenna",
+          "columnName": "my_antenna",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myRadio",
+          "columnName": "my_radio",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "nameSearchIndex",
+          "columnName": "name_search_index",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "operator",
+          "columnName": "operator",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "qth",
+          "columnName": "qth",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirCity",
+          "columnName": "their_city",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirPark",
+          "columnName": "their_park",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "userQth",
+          "columnName": "user_qth",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "active",
+          "columnName": "active",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "activities",
+          "columnName": "activities",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "activitiesData",
+          "columnName": "activities_data",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "activitiesReferences",
+          "columnName": "activities_references",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "adiError",
+          "columnName": "adi_error",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "adiFileName",
+          "columnName": "adi_file_name",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contactString",
+          "columnName": "contact_string",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "errorMessage",
+          "columnName": "error_message",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "hasValidationErrors",
+          "columnName": "has_validation_errors",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myActivityReferences",
+          "columnName": "my_activity_references",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myPark",
+          "columnName": "my_park",
+          "dataType": "TIMESTAMP",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "primaryActivity",
+          "columnName": "primary_activity",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "rawData",
+          "columnName": "raw_data",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirActivities",
+          "columnName": "their_activities",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirActivityReferences",
+          "columnName": "their_activity_references",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "validationErrors",
+          "columnName": "validation_errors",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lotwImportedOn",
+          "columnName": "lotw_imported_on",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lotwUploadedOn",
+          "columnName": "lotw_uploaded_on",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "qrzImportedOn",
+          "columnName": "qrz_imported_on",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "qrzUploadedOn",
+          "columnName": "qrz_uploaded_on",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "duplicate",
+          "columnName": "duplicate",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestPoints",
+          "columnName": "contest_points",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "continent",
+          "columnName": "continent",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "countryCode",
+          "columnName": "country_code",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "cw",
+          "columnName": "cw",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "digital",
+          "columnName": "digital",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "dxccNumber",
+          "columnName": "dxcc_number",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "exchangeOne",
+          "columnName": "exchange_one",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "exchangeTwo",
+          "columnName": "exchange_two",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "flagCode",
+          "columnName": "flag_code",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "id",
+          "columnName": "id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "isWFDContact",
+          "columnName": "is_w_f_d_contact",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "itemIndex",
+          "columnName": "item_index",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirCallSign",
+          "columnName": "their_call_sign",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "voice",
+          "columnName": "voice",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "appVersion",
+          "columnName": "app_version",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestName",
+          "columnName": "contest_name",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "createdAt",
+          "columnName": "created_at",
+          "dataType": "BIGINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "exchangeFour",
+          "columnName": "exchange_four",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "exchangeThree",
+          "columnName": "exchange_three",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myAntennaId",
+          "columnName": "my_antenna_id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myNameSearchIndex",
+          "columnName": "my_name_search_index",
+          "dataType": "TEXT[]",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myRadioId",
+          "columnName": "my_radio_id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "mySavedLocationId",
+          "columnName": "my_saved_location_id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirAddress",
+          "columnName": "their_address",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "theirProfilePic",
+          "columnName": "their_profile_pic",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        }
+      ]
+  }

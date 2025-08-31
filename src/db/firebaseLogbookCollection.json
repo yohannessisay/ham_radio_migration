@@ -1,0 +1,334 @@
+  {
+      "collection": "LogBook",
+      "columns": [
+        {
+          "fieldName": "firebase_id",
+          "columnName": "firebase_id",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "id",
+          "columnName": "id",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "lastContactTimestamp",
+          "columnName": "last_contact_timestamp",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "name",
+          "columnName": "name",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "timestamp",
+          "columnName": "timestamp",
+          "dataType": "TIMESTAMP",
+          "notNull": true,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "uid",
+          "columnName": "uid",
+          "dataType": "TEXT",
+          "notNull": true,
+          "isPrimaryKey": true
+        },
+        {
+          "fieldName": "contactCount",
+          "columnName": "contact_count",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultLocation",
+          "columnName": "default_location",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultCallSign",
+          "columnName": "default_call_sign",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "callSignType",
+          "columnName": "call_sign_type",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "logbookStyle",
+          "columnName": "logbook_style",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myAntenna",
+          "columnName": "my_antenna",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myRadio",
+          "columnName": "my_radio",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "myParks",
+          "columnName": "my_parks",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "assisted",
+          "columnName": "assisted",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestBand",
+          "columnName": "contest_band",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestPower",
+          "columnName": "contest_power",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultBand",
+          "columnName": "default_band",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultFrequency",
+          "columnName": "default_frequency",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultMode",
+          "columnName": "default_mode",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "defaultPower",
+          "columnName": "default_power",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "description",
+          "columnName": "description",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "numberOfTransmitters",
+          "columnName": "number_of_transmitters",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "operator",
+          "columnName": "operator",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "adiFile",
+          "columnName": "adi_file",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "adiFileCopy",
+          "columnName": "adi_file_copy",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "adiImported",
+          "columnName": "adi_imported",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "duplicateContacts",
+          "columnName": "duplicate_contacts",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "errorCode",
+          "columnName": "error_code",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "failedContacts",
+          "columnName": "failed_contacts",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "fileName",
+          "columnName": "file_name",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "importDate",
+          "columnName": "import_date",
+          "dataType": "TIMESTAMP",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "importStatus",
+          "columnName": "import_status",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "locked",
+          "columnName": "locked",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "successContacts",
+          "columnName": "success_contacts",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "totalImportContacts",
+          "columnName": "total_import_contacts",
+          "dataType": "SMALLINT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contest",
+          "columnName": "contest",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "contestId",
+          "columnName": "contest_id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "firstImport",
+          "columnName": "first_import",
+          "dataType": "BOOLEAN",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lastSpottedAt",
+          "columnName": "last_spotted_at",
+          "dataType": "TIMESTAMP",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lastSpottedBand",
+          "columnName": "last_spotted_band",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lastSpottedComment",
+          "columnName": "last_spotted_comment",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lastSpottedFrequency",
+          "columnName": "last_spotted_frequency",
+          "dataType": "TIMESTAMP",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "lastSpottedMode",
+          "columnName": "last_spotted_mode",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "logBookTemplateId",
+          "columnName": "log_book_template_id",
+          "dataType": "TEXT",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "radio",
+          "columnName": "radio",
+          "dataType": "JSONB",
+          "notNull": false,
+          "isPrimaryKey": false
+        },
+        {
+          "fieldName": "updatedAt",
+          "columnName": "updated_at",
+          "dataType": "TIMESTAMP",
+          "notNull": false,
+          "isPrimaryKey": false
+        }
+      ]
+    }

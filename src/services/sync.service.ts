@@ -1,306 +1,239 @@
 // services/sync.service.ts
-import { getFirestore, collection, getDocs, limit, query, orderBy, startAfter } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  limit,
+  query,
+  orderBy,
+  startAfter,
+} from "firebase/firestore";
 import FirebaseService from "./firebase.service.js";
 import { UserProfile } from "../models/user.model.js";
-import { LogBook } from "../models/logbook.model.js"; 
+import { LogBook } from "../models/logbook.model.js";
 import { LogbookContacts } from "../models/logbook_contacts.model.js";
-import { Transaction, Op } from "sequelize";
-import { sequelize } from "../config/db.config";
+
+// Tune based on memory and DB performance
+const PAGE_SIZE = 5000; // Larger page size for fewer round-trips
+const MAX_CONCURRENT_COLLECTIONS = 3; // We only have 3
 
 class SyncService {
   private db = getFirestore(FirebaseService.getInstance());
 
-  // Normalize Firestore Timestamp/number/string into JS Date or null
+  // Convert any timestamp format (Firestore Timestamp, number, string) to Date | null
   private toDate(value: any): Date | null {
-    try {
-      if (!value) return null;
-      if (typeof value === "object" && typeof (value as any).seconds === "number") {
-        return new Date((value as any).seconds * 1000);
-      }
-      if (typeof value === "number") {
-        return new Date(value);
-      }
-      if (typeof value === "string") {
-        const d = new Date(value);
-        return isNaN(d.getTime()) ? null : d;
-      }
-      return null;
-    } catch {
-      return null;
+    if (!value) return null;
+    if (typeof value === "object" && "seconds" in value) {
+      return new Date(value.seconds * 1000);
     }
+    if (typeof value === "number") {
+      return new Date(value);
+    }
+    if (typeof value === "string") {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    return null;
   }
 
-  // Ensure JSONB-safe plain object (drops methods, symbols)
   private toJSON(value: any): any {
-    try {
-      if (value === undefined || value === null) return null;
-      return JSON.parse(JSON.stringify(value));
-    } catch {
-      return null;
-    }
+    return value === undefined || value === null
+      ? null
+      : JSON.parse(JSON.stringify(value));
   }
 
-  // Ensure string[] for ARRAY columns
   private toStringArray(value: any): string[] {
     if (!Array.isArray(value)) return [];
-    return value
-      .filter((v) => v !== undefined && v !== null)
-      .map((v) => String(v));
+    return value.filter((v) => v != null && v !== "").map(String);
   }
 
-  async syncUsersPaged(totalLimit = 10000, pageSize = 1000) {
-    const usersCollection = collection(this.db, "UserProfile");
+  private toNumber(val: any, fallback: number | null = null): number | null {
+    if (typeof val === "number" && !isNaN(val)) return val;
+    const n = Number(val);
+    return isNaN(n) ? fallback : n;
+  }
+
+  private toBoolean(val: any): boolean | null {
+    if (typeof val === "boolean") return val;
+    if (typeof val === "string") {
+      return ["true", "1", "yes"].includes(val.trim().toLowerCase());
+    }
+    return null;
+  }
+
+  // 🔥 Bulk Sync with Pagination and Sequelize bulkCreate + updateOnDuplicate
+  private async syncCollection<T>(
+    collectionName: string,
+    model: any,
+    mapper: (data: any, docId: string) => T,
+    orderByField = "timestamp",
+    limitCount = 100000
+  ): Promise<{ fetchedTotal: number; insertedTotal: number }> {
+    const collRef = collection(this.db, collectionName);
     let fetchedTotal = 0;
     let insertedTotal = 0;
     let lastDoc: any = null;
 
-    while (fetchedTotal < totalLimit) {
-      const pageLimit = Math.min(pageSize, totalLimit - fetchedTotal);
-      const q = lastDoc
-        ? query(usersCollection, orderBy("timestamp", "desc"), startAfter(lastDoc), limit(pageLimit))
-        : query(usersCollection, orderBy("timestamp", "desc"), limit(pageLimit));
+    while (fetchedTotal < limitCount) {
+      const remaining = limitCount - fetchedTotal;
+      const currentLimit = Math.min(PAGE_SIZE, remaining);
+
+      let q = query(
+        collRef,
+        orderBy(orderByField, "desc"),
+        limit(currentLimit)
+      );
+      if (lastDoc) {
+        q = query(
+          collRef,
+          orderBy(orderByField, "desc"),
+          startAfter(lastDoc),
+          limit(currentLimit)
+        );
+      }
 
       const snapshot = await getDocs(q);
       if (snapshot.empty) break;
 
-      const users = snapshot.docs.map((doc) => {
-        const d = doc.data() as any;
-        return {
-          uid: d.uid || doc.id, // prefer explicit uid, fallback to doc.id if matches
-          firstName: d.firstName || null,
-          lastName: d.lastName || null,
-          callSign: d.callSign || null,
-          email: d.email || null,
-          phoneNumber: d.phoneNumber || null,
-          country: d.country || null,
-          state: d.state || null,
-          city: d.city || null,
-          address: d.address || null,
-          gridSquare: d.gridSquare || null,
-          bio: d.bio || null,
-          cqZone: typeof d.cqZone === "number" ? d.cqZone : (d.cqZone ? Number(d.cqZone) : null),
-          ituZone: typeof d.ituZone === "number" ? d.ituZone : (d.ituZone ? Number(d.ituZone) : null),
-          coordinates: this.toJSON(d.coordinates),
-          nameSearchIndex: this.toStringArray(d.nameSearchIndex),
-          callsignSearchIndex: this.toStringArray(d.callsignSearchIndex),
-          timestamp: this.toDate(d.timestamp),
-        };
-      });
+      const records = snapshot.docs.map((doc) => mapper(doc.data(), doc.id));
 
-      fetchedTotal += users.length;
-      lastDoc = snapshot.docs[snapshot.docs.length - 1];
+      fetchedTotal += records.length;
+      insertedTotal += records.length; // We assume bulkCreate succeeds
 
-      // Only process valid PKs
-      const validUsers = users.filter((u) => !!u.uid);
-
-      const t: Transaction = await sequelize.transaction();
+      // 🔥 Use Sequelize bulkCreate with upsert
       try {
-        const uids = validUsers.map((u) => u.uid);
-        if (uids.length) {
-          const existing = await UserProfile.findAll({
-            attributes: ["uid"],
-            where: { uid: { [Op.in]: uids } },
-            transaction: t,
-            raw: true,
-          });
-          const existingSet = new Set(existing.map((e: any) => e.uid));
-          const toInsert = validUsers.filter((u) => !existingSet.has(u.uid));
-          const toUpdate = validUsers.filter((u) => existingSet.has(u.uid));
-
-          if (toInsert.length) {
-            await UserProfile.bulkCreate(toInsert, { transaction: t, validate: false, returning: false });
+        await model.bulkCreate(records, {
+          updateOnDuplicate: Object.keys(model.rawAttributes), // Update all fields on conflict
+          validate: false,
+          ignoreDuplicates: false, // Important: false = update on duplicate key
+        });
+      } catch (err) {
+        console.error(`Bulk insert failed for ${collectionName}:`, err);
+        // Optionally, fall back to individual upserts or retry
+        insertedTotal -= records.length;
+        for (const record of records) {
+          try {
+            await model.upsert(record, { validate: false });
+            insertedTotal++;
+          } catch (e) {
+            // Ignore individual failure
           }
-          for (const u of toUpdate) {
-            const { uid, ...rest } = u as any;
--            await UserProfile.update(rest, { where: { uid }, transaction: t });
-+            await UserProfile.update(rest, { where: { uid }, transaction: t, validate: false });
-          }
-          insertedTotal += validUsers.length;
         }
-        await t.commit();
-      } catch (e) {
-        await t.rollback();
-        throw e;
       }
 
-      if (users.length < pageLimit) break;
+      lastDoc = snapshot.docs[snapshot.docs.length - 1];
+      if (snapshot.docs.length < currentLimit) break;
     }
 
     return { fetchedTotal, insertedTotal };
   }
 
-  async syncLogBooksPaged(totalLimit = 10000, pageSize = 1000) {
-    const logCollection = collection(this.db, "LogBook");
-    let fetchedTotal = 0;
-    let insertedTotal = 0;
-    let lastDoc: any = null;
-
-    while (fetchedTotal < totalLimit) {
-      const pageLimit = Math.min(pageSize, totalLimit - fetchedTotal);
-      const q = lastDoc
-        ? query(logCollection, orderBy("timestamp", "desc"), startAfter(lastDoc), limit(pageLimit))
-        : query(logCollection, orderBy("timestamp", "desc"), limit(pageLimit));
-
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) break;
-
-      const logs = snapshot.docs.map((doc) => {
-        const d: any = doc.data();
-        return {
-          firebase_id: doc.id,
-          uid: d.uid || d.userId || null,
-          name: d.name || null,
-          myAntenna: d.myAntenna || null,
-          myRadio: d.myRadio || null,
-          contactCount: typeof d.contactCount === "number" ? d.contactCount : (d.contactCount ? Number(d.contactCount) : 0),
-          coordinates: this.toJSON(d.coordinates),
-          timestamp: this.toDate(d.timestamp),
-          lastContactTimestamp: this.toDate(d.lastContactTimestamp),
-        };
-      });
-
-      fetchedTotal += logs.length;
-      lastDoc = snapshot.docs[snapshot.docs.length - 1];
-
-      const t: Transaction = await sequelize.transaction();
-      try {
-        const ids = logs.map((l) => l.firebase_id).filter(Boolean);
-        if (ids.length) {
-          const existing = await LogBook.findAll({
-            attributes: ["firebase_id"],
-            where: { firebase_id: { [Op.in]: ids } },
-            transaction: t,
-            raw: true,
-          });
-          const existingSet = new Set(existing.map((e: any) => e.firebase_id));
-          const toInsert = logs.filter((l) => !existingSet.has(l.firebase_id));
-          const toUpdate = logs.filter((l) => existingSet.has(l.firebase_id));
-
-          if (toInsert.length) {
-            await LogBook.bulkCreate(toInsert, { transaction: t, validate: false, returning: false });
-          }
-          for (const l of toUpdate) {
-            const { firebase_id, ...rest } = l as any;
--            await LogBook.update(rest, { where: { firebase_id }, transaction: t });
-+            await LogBook.update(rest, { where: { firebase_id }, transaction: t, validate: false });
-          }
-          insertedTotal += logs.length;
-        }
-        await t.commit();
-      } catch (e) {
-        await t.rollback();
-        throw e;
-      }
-
-      if (logs.length < pageLimit) break;
-    }
-
-    return { fetchedTotal, insertedTotal };
-  }
-
-  async syncLogBookContactsPaged(totalLimit = 100000, pageSize = 2000) {
-    const contactsCollection = collection(this.db, "LogBookContact");
-    let fetchedTotal = 0;
-    let insertedTotal = 0;
-    let lastDoc: any = null;
-
-    while (fetchedTotal < totalLimit) {
-      const pageLimit = Math.min(pageSize, totalLimit - fetchedTotal);
-      const q = lastDoc
-        ? query(contactsCollection, orderBy("timestamp", "desc"), startAfter(lastDoc), limit(pageLimit))
-        : query(contactsCollection, orderBy("timestamp", "desc"), limit(pageLimit));
-
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) break;
-
-      const contacts = snapshot.docs.map((doc) => {
-        const data: any = doc.data();
-        const contactTs = data.contactTimeStamp || data.contactTimestamp;
-        return {
-          firebase_id: doc.id,
-          uid: data.uid || data.userId || null,
-          logBookId: data.logBookId || null,
-          theirCallsign: data.theirCallsign || null,
-          profileCallSign: data.profileCallSign || null,
-          myName: data.myName || null,
-          myCallSign: data.myCallSign || null,
-          userMode: data.userMode || null,
-          band: data.band || null,
-          country: data.country || null,
-          myCountry: data.myCountry || null,
-          myCity: data.myCity || null,
-          myState: data.myState || null,
-          userQth: data.userQth || null,
-          flagCode: data.flagCode || null,
-          userGrid: data.userGrid || null,
-          myAntenna: data.myAntenna || null,
-          myRadio: data.myRadio || null,
-          callSignSearchIndex: this.toStringArray(data.callSignSearchIndex),
-          continent: data.continent || null,
-          distance: typeof data.distance === "number" ? data.distance : (data.distance ? Number(data.distance) : null),
-          coordinates: this.toJSON(data.myCoordinates || data.coordinates),
-          timestamp: this.toDate(contactTs) || this.toDate(data.timestamp),
-          contactTimeStamp: this.toDate(contactTs),
-          date: this.toDate(data.date),
-          notes: data.notes || null,
-          active: typeof data.active === "boolean" ? data.active : (typeof data.active === "string" ? data.active.toLowerCase() === "true" : null),
-          nameSearchIndex: this.toStringArray(data.nameSearchIndex),
-          myNameSearchIndex: this.toStringArray(data.myNameSearchIndex),
-        };
-      });
-
-      fetchedTotal += contacts.length;
-      lastDoc = snapshot.docs[snapshot.docs.length - 1];
-
-      const t: Transaction = await sequelize.transaction();
-      try {
-        const ids = contacts.map((c) => c.firebase_id).filter(Boolean);
-        if (ids.length) {
-          const existing = await LogbookContacts.findAll({
-            attributes: ["firebase_id"],
-            where: { firebase_id: { [Op.in]: ids } },
-            transaction: t,
-            raw: true,
-          });
-          const existingSet = new Set(existing.map((e: any) => e.firebase_id));
-          const toInsert = contacts.filter((c) => !existingSet.has(c.firebase_id));
-          const toUpdate = contacts.filter((c) => existingSet.has(c.firebase_id));
-
-          if (toInsert.length) {
-            await LogbookContacts.bulkCreate(toInsert, { transaction: t, validate: false, returning: false });
-          }
-          for (const c of toUpdate) {
-            const { firebase_id, ...rest } = c as any;
--            await LogbookContacts.update(rest, { where: { firebase_id }, transaction: t });
-+            await LogbookContacts.update(rest, { where: { firebase_id }, transaction: t, validate: false });
-          }
-          insertedTotal += contacts.length;
-        }
-        await t.commit();
-      } catch (e) {
-        await t.rollback();
-        throw e;
-      }
-
-      if (contacts.length < pageSize) break;
-    }
-
-    return { fetchedTotal, insertedTotal };
-  }
-
-  async syncAll(limitCount = 10000) {
-    const usersRes = await this.syncUsersPaged(Math.max(limitCount, 10000), 1000);
-    const logsRes = await this.syncLogBooksPaged(limitCount, 1000);
-    const contactsRes = await this.syncLogBookContactsPaged(100000, 2000);
-
+  // Mapper Functions
+  private mapUserProfile(data: any, docId: string) {
     return {
-      usersFetched: usersRes.fetchedTotal,
-      usersInserted: usersRes.insertedTotal,
-      logsFetched: logsRes.fetchedTotal,
-      logsInserted: logsRes.insertedTotal,
-      contactsFetched: contactsRes.fetchedTotal,
-      contactsInserted: contactsRes.insertedTotal,
+      uid: data.uid || docId,
+      firstName: data.firstName || null,
+      lastName: data.lastName || null,
+      callSign: data.callSign || null,
+      email: data.email || null,
+      phoneNumber: data.phoneNumber || null,
+      country: data.country || null,
+      state: data.state || null,
+      city: data.city || null,
+      address: data.address || null,
+      gridSquare: data.gridSquare || null,
+      bio: data.bio || null,
+      cqZone: this.toNumber(data.cqZone),
+      ituZone: this.toNumber(data.ituZone),
+      coordinates: this.toJSON(data.coordinates),
+      nameSearchIndex: this.toStringArray(data.nameSearchIndex),
+      callsignSearchIndex: this.toStringArray(data.callsignSearchIndex),
+      timestamp: this.toDate(data.timestamp),
     };
+  }
+
+  private mapLogBook(data: any, docId: string) {
+    return {
+      uid: data.uid || data.userId || null,
+      name: data.name || null,
+      myAntenna: data.myAntenna || null,
+      myRadio: data.myRadio || null,
+      contactCount: this.toNumber(data.contactCount, 0),
+      coordinates: this.toJSON(data.coordinates),
+      timestamp: this.toDate(data.timestamp),
+      lastContactTimestamp: this.toDate(data.lastContactTimestamp),
+    };
+  }
+
+  private mapLogbookContact(data: any, docId: string) {
+    const contactTs = data.contactTimeStamp || data.contactTimestamp;
+    return {
+      uid: data.uid || data.userId || null,
+      logBookId: data.logBookId || null,
+      theirCallsign: data.theirCallsign || null,
+      profileCallSign: data.profileCallSign || null,
+      myName: data.myName || null,
+      myCallSign: data.myCallSign || null,
+      userMode: data.userMode || null,
+      band: data.band || null,
+      country: data.country || null,
+      myCountry: data.myCountry || null,
+      myCity: data.myCity || null,
+      myState: data.myState || null,
+      userQth: data.userQth || null,
+      flagCode: data.flagCode || null,
+      userGrid: data.userGrid || null,
+      myAntenna: data.myAntenna || null,
+      myRadio: data.myRadio || null,
+      callSignSearchIndex: this.toStringArray(data.callSignSearchIndex),
+      continent: data.continent || null,
+      distance: this.toNumber(data.distance),
+      coordinates: this.toJSON(data.myCoordinates || data.coordinates),
+      timestamp: this.toDate(contactTs) || this.toDate(data.timestamp),
+      contactTimeStamp: this.toDate(contactTs),
+      date: this.toDate(data.date),
+      notes: data.notes || null,
+      active: this.toBoolean(data.active),
+      nameSearchIndex: this.toStringArray(data.nameSearchIndex),
+      myNameSearchIndex: this.toStringArray(data.myNameSearchIndex),
+    };
+  }
+
+  // 🚀 Main Sync Function
+  async syncAll(limitCount = 100000) {
+    console.time("Full Sync");
+
+    try {
+      // Run all three in parallel
+      // const [usersRes, logsRes, contactsRes] = await Promise.all([
+      //   this.syncCollection("UserProfile", UserProfile, this.mapUserProfile.bind(this), "timestamp", limitCount),
+      //   this.syncCollection("LogBook", LogBook, this.mapLogBook.bind(this), "timestamp", limitCount),
+      //   this.syncCollection("LogBookContact", LogbookContacts, this.mapLogbookContact.bind(this), "timestamp", limitCount),
+      // ]);
+      const [usersRes] = await Promise.all([
+        this.syncCollection(
+          "UserProfile",
+          UserProfile,
+          this.mapUserProfile.bind(this),
+          "timestamp",
+          limitCount
+        ),
+      ]);
+
+      console.timeEnd("Full Sync");
+
+      return {
+        usersFetched: usersRes.fetchedTotal,
+        usersInserted: usersRes.insertedTotal,
+        // logsFetched: logsRes.fetchedTotal,
+        // logsInserted: logsRes.insertedTotal,
+        // contactsFetched: contactsRes.fetchedTotal,
+        // contactsInserted: contactsRes.insertedTotal,
+      };
+    } catch (err) {
+      console.error("Sync failed:", err);
+      throw err;
+    }
   }
 }
 

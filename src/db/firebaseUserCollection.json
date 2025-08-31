@@ -1,0 +1,439 @@
+{
+  "collection": "UserProfile",
+  "columns": [
+    {
+      "fieldName": "address",
+      "columnName": "address",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "bio",
+      "columnName": "bio",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "callSign",
+      "columnName": "call_sign",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "callsignSearchIndex",
+      "columnName": "callsign_search_index",
+      "dataType": "TEXT[]",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "city",
+      "columnName": "city",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "continent",
+      "columnName": "continent",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "coordinates",
+      "columnName": "coordinates",
+      "dataType": "JSONB",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "country",
+      "columnName": "country",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "countryCode",
+      "columnName": "country_code",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "cqZone",
+      "columnName": "cq_zone",
+      "dataType": "SMALLINT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "dxccNumber",
+      "columnName": "dxcc_number",
+      "dataType": "SMALLINT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "email",
+      "columnName": "email",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "firebase_id",
+      "columnName": "firebase_id",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": true
+    },
+    {
+      "fieldName": "firstName",
+      "columnName": "first_name",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "flagCode",
+      "columnName": "flag_code",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "gridSquare",
+      "columnName": "grid_square",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "ituZone",
+      "columnName": "itu_zone",
+      "dataType": "SMALLINT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "lastName",
+      "columnName": "last_name",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "nameSearchIndex",
+      "columnName": "name_search_index",
+      "dataType": "TEXT[]",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "needsLocationOnboarding",
+      "columnName": "needs_location_onboarding",
+      "dataType": "BOOLEAN",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "phoneNumber",
+      "columnName": "phone_number",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "provideId",
+      "columnName": "provide_id",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "state",
+      "columnName": "state",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "timestamp",
+      "columnName": "timestamp",
+      "dataType": "TIMESTAMP",
+      "notNull": true,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "uid",
+      "columnName": "uid",
+      "dataType": "TEXT",
+      "notNull": true,
+      "isPrimaryKey": true
+    },
+    {
+      "fieldName": "lastContactModification",
+      "columnName": "last_contact_modification",
+      "dataType": "TIMESTAMP",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "needsAggregation",
+      "columnName": "needs_aggregation",
+      "dataType": "BOOLEAN",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "numberOfContactsImported",
+      "columnName": "number_of_contacts_imported",
+      "dataType": "SMALLINT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "quota",
+      "columnName": "quota",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "savedLocationId",
+      "columnName": "saved_location_id",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "hasStreak",
+      "columnName": "has_streak",
+      "dataType": "BOOLEAN",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "streakStats",
+      "columnName": "streak_stats",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "contests",
+      "columnName": "contests",
+      "dataType": "TEXT[]",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "stripeId",
+      "columnName": "stripe_id",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "stripeLink",
+      "columnName": "stripe_link",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "foundingMemberCount",
+      "columnName": "founding_member_count",
+      "dataType": "SMALLINT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "membershipStatus",
+      "columnName": "membership_status",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "numberOfContacts",
+      "columnName": "number_of_contacts",
+      "dataType": "SMALLINT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "settings",
+      "columnName": "settings",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "spottingFilters",
+      "columnName": "spotting_filters",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "subscriptionCanceledAt",
+      "columnName": "subscription_canceled_at",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "subscriptionCancelOnPeriodEnd",
+      "columnName": "subscription_cancel_on_period_end",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "subscriptionCreatedAt",
+      "columnName": "subscription_created_at",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "subscriptionEndedAt",
+      "columnName": "subscription_ended_at",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "subscriptionStatus",
+      "columnName": "subscription_status",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "bands",
+      "columnName": "bands",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "modes",
+      "columnName": "modes",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "longBio",
+      "columnName": "long_bio",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "stateLongName",
+      "columnName": "state_long_name",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "admin",
+      "columnName": "admin",
+      "dataType": "BOOLEAN",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "autoExportToQrzLotw",
+      "columnName": "auto_export_to_qrz_lotw",
+      "dataType": "BOOLEAN",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "defaultLogbookSettings",
+      "columnName": "default_logbook_settings",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "facebook",
+      "columnName": "facebook",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "instagram",
+      "columnName": "instagram",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "linkedin",
+      "columnName": "linkedin",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "profilePic",
+      "columnName": "profile_pic",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "twitter",
+      "columnName": "twitter",
+      "dataType": "TEXT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "activator",
+      "columnName": "activator",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "activityGraphRepaired",
+      "columnName": "activity_graph_repaired",
+      "dataType": "BOOLEAN",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "bugCount",
+      "columnName": "bug_count",
+      "dataType": "SMALLINT",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "hunter",
+      "columnName": "hunter",
+      "dataType": "JSONB",
+      "notNull": false,
+      "isPrimaryKey": false
+    },
+    {
+      "fieldName": "spotsCreated",
+      "columnName": "spots_created",
+      "dataType": "SMALLINT",
+      "notNull": false,
+      "isPrimaryKey": false
+    }
+  ]
+}

@@ -6,9 +6,10 @@ class SyncController {
   async syncAll(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { limit } = req.query as { limit?: string };
-      const parsedLimit = limit ? parseInt(limit, 10) : 10000;
+      const parsedLimit = limit ? parseInt(limit, 10) : 100000;
 
       const result = await syncService.syncAll(parsedLimit);
+      
 
       return reply.send({
         success: true,
