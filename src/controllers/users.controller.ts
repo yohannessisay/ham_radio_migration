@@ -1,57 +1,68 @@
- 
-import { FastifyRequest, FastifyReply } from "fastify";
-import UserService from "../services/users.service.js";
+import { FastifyRequest, FastifyReply } from "fastify"; 
 import { sendSuccess, sendError } from "../utils/responseHandler.js";
-import CollectionStructureService from "../services/generate-columns.service.js";
-class UserController {
-  async getStructure(req: FastifyRequest, reply: FastifyReply) { 
- const collectionStructure = await CollectionStructureService.getCollectionStructure("LogBookContact");
-    if (collectionStructure) {
-      return sendSuccess({
-        reply,
-        data: {   structure: collectionStructure },
-        message: "User structure fetched successfully",
-      });
-    } else {
-      return sendError({
-        reply,
-        message: "Failed to fetch user structure",
-      });
-    }
-  }
+import usersService from "../services/users.service.js";
 
+class UserController {
+  /**
+   * GET /users?page=1&limit=10&sortBy=timestamp&sortOrder=DESC&search=name
+   */
   async getUsers(req: FastifyRequest, reply: FastifyReply) {
     try {
-      // Extract query params
-      const { page, limit, sortBy, sortOrder, ...filters } = req.query as any;
+      const { page, limit, sortBy, sortOrder, search } = req.query as {
+        page?: string;
+        limit?: string;
+        sortBy?: string;
+        sortOrder?: 'ASC' | 'DESC';
+        search?: string;
+      };
 
-      const result = await UserService.getUsers({
+      const result = await usersService.getUsers({
         page: Number(page) || 1,
-        limit: Number(limit) || 50,
+        limit: Number(limit) || 10,
         sortBy: sortBy || "timestamp",
-        sortOrder: sortOrder?.toUpperCase() === "ASC" ? "ASC" : "DESC",
-        filters,
+        sortOrder: sortOrder === 'ASC' ? 'ASC' : 'DESC',
+        search: search || '',
       });
 
-      return sendSuccess({ reply, data: result, message: "Users fetched successfully" });
+      if (!result.success) {
+        return sendError({ reply, message: result.message });
+      }
+
+      return sendSuccess({
+        reply,
+        data: result.data,
+        message: result.message || "Users fetched successfully",
+        ...(result.pagination && { pagination: result.pagination }),
+      });
     } catch (err) {
-      return sendError({ reply, error: err, message: "Failed to fetch users" });
+      return sendError({ reply, message: "Failed to fetch users", error: err });
     }
   }
 
-    async syncUsers(req: FastifyRequest, reply: FastifyReply) {
+  /**
+   * GET /users/:id
+   */
+  async getUserById(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const result = await UserService.syncFromFirestore(10000);
-      return reply.send({
-        success: true,
-        message: `Fetched ${result.totalFetched} users and inserted ${result.insertedCount} into Postgres`,
+      const { id } = req.params as { id: string };
+
+      if (!id) {
+        return sendError({ reply, message: "User ID is required", statusCode: 400 });
+      }
+
+      const result = await usersService.getUserById(id);
+
+      if (!result.success) {
+        return sendError({ reply, message: result.message, statusCode: 404 });
+      }
+
+      return sendSuccess({
+        reply,
+        data: result.data,
+        message: "User fetched successfully",
       });
-    } catch (err: any) {
-      console.error("❌ Sync error:", err);
-      return reply.status(500).send({
-        success: false,
-        message: err.message || "Failed to sync users",
-      });
+    } catch (err) {
+      return sendError({ reply, message: "Failed to fetch user", error: err });
     }
   }
 }

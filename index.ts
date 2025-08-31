@@ -1,14 +1,12 @@
 import Fastify from "fastify";
-import userRoutes from "./src/routes/user.route.ts";
-import getStructureRoutes from "./src/routes/get-structure.route.ts";
+import userRoutes from "./src/routes/user.route.ts"; 
 import FirebaseService from "./src/services/firebase.service.js";
 import syncRoutes from "./src/routes/sync.route.ts";
 const server = Fastify();
 
 FirebaseService.getInstance();
 
-server.register(userRoutes);
-server.register(getStructureRoutes);
+server.register(userRoutes); 
 server.register(syncRoutes);
 
 const start = async () => {
