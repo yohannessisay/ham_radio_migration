@@ -6,17 +6,17 @@ export class LogBook extends Model {}
 LogBook.init(
   {
     firebase_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       primaryKey: true,
     },
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       primaryKey: true,
     },
     uid: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       primaryKey: true,
     },
@@ -25,7 +25,7 @@ LogBook.init(
       allowNull: false,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     timestamp: {
@@ -33,7 +33,7 @@ LogBook.init(
       allowNull: false,
     },
     contact_count: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     default_location: {
@@ -41,23 +41,23 @@ LogBook.init(
       allowNull: true,
     },
     default_call_sign: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     call_sign_type: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     logbook_style: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     my_antenna: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     my_radio: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     my_parks: {
@@ -65,51 +65,51 @@ LogBook.init(
       allowNull: true,
     },
     assisted: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     contest_band: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     contest_power: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     default_band: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     default_frequency: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     default_mode: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     default_power: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     number_of_transmitters: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     operator: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     adi_file: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     adi_file_copy: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     adi_imported: {
@@ -117,19 +117,19 @@ LogBook.init(
       allowNull: true,
     },
     duplicate_contacts: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     error_code: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     failed_contacts: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     file_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     import_date: {
@@ -137,7 +137,7 @@ LogBook.init(
       allowNull: true,
     },
     import_status: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     locked: {
@@ -145,11 +145,11 @@ LogBook.init(
       allowNull: true,
     },
     success_contacts: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     total_import_contacts: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     contest: {
@@ -157,7 +157,7 @@ LogBook.init(
       allowNull: true,
     },
     contest_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     first_import: {
@@ -169,23 +169,23 @@ LogBook.init(
       allowNull: true,
     },
     last_spotted_band: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     last_spotted_comment: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     last_spotted_frequency: {
-      type: DataTypes.STRING,  
+      type: DataTypes.TEXT,  
       allowNull: true,
     },
     last_spotted_mode: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     log_book_template_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     radio: {

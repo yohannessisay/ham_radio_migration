@@ -4,11 +4,9 @@ import syncService from "../services/sync.service";
 
 class SyncController {
   async syncAll(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { limit } = req.query as { limit?: string };
-      const parsedLimit = limit ? parseInt(limit, 10) : 100000;
+    try { 
 
-      const result = await syncService.syncAll(parsedLimit);
+      const result = await syncService.syncAll();
       
 
       return reply.send({

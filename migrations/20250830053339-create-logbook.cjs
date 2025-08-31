@@ -6,34 +6,34 @@ module.exports = {
       "LogBook",
       {
         firebase_id: {
-          type: Sequelize.STRING,
-          allowNull: false,
+          type: Sequelize.TEXT,
+          allowNull: true,
           primaryKey: true,
         },
         id: {
-          type: Sequelize.STRING,
-          allowNull: false,
+          type: Sequelize.TEXT,
+          allowNull: true,
           primaryKey: true,
         },
         uid: {
-          type: Sequelize.STRING,
-          allowNull: false,
+          type: Sequelize.TEXT,
+          allowNull: true,
           primaryKey: true,
         },
         last_contact_timestamp: {
           type: Sequelize.DATE,
-          allowNull: false,
+          allowNull: true,
         },
         name: {
-          type: Sequelize.STRING,
-          allowNull: false,
+          type: Sequelize.TEXT,
+          allowNull: true,
         },
         timestamp: {
           type: Sequelize.DATE,
-          allowNull: false,
+          allowNull: true,
         },
         contact_count: {
-          type: Sequelize.SMALLINT,
+          type: Sequelize.BIGINT,
           allowNull: true,
         },
         default_location: {
@@ -41,23 +41,23 @@ module.exports = {
           allowNull: true,
         },
         default_call_sign: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         call_sign_type: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         logbook_style: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         my_antenna: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         my_radio: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         my_parks: {
@@ -65,51 +65,51 @@ module.exports = {
           allowNull: true,
         },
         assisted: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         contest_band: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         contest_power: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         default_band: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         default_frequency: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         default_mode: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         default_power: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         description: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         number_of_transmitters: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         operator: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         adi_file: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         adi_file_copy: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         adi_imported: {
@@ -117,19 +117,19 @@ module.exports = {
           allowNull: true,
         },
         duplicate_contacts: {
-          type: Sequelize.SMALLINT,
+          type: Sequelize.BIGINT,
           allowNull: true,
         },
         error_code: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         failed_contacts: {
-          type: Sequelize.SMALLINT,
+          type: Sequelize.BIGINT,
           allowNull: true,
         },
         file_name: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         import_date: {
@@ -137,7 +137,7 @@ module.exports = {
           allowNull: true,
         },
         import_status: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         locked: {
@@ -145,11 +145,11 @@ module.exports = {
           allowNull: true,
         },
         success_contacts: {
-          type: Sequelize.SMALLINT,
+          type: Sequelize.BIGINT,
           allowNull: true,
         },
         total_import_contacts: {
-          type: Sequelize.SMALLINT,
+          type: Sequelize.BIGINT,
           allowNull: true,
         },
         contest: {
@@ -157,7 +157,7 @@ module.exports = {
           allowNull: true,
         },
         contest_id: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         first_import: {
@@ -169,23 +169,23 @@ module.exports = {
           allowNull: true,
         },
         last_spotted_band: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         last_spotted_comment: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         last_spotted_frequency: {
-          type: Sequelize.STRING, 
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         last_spotted_mode: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         log_book_template_id: {
-          type: Sequelize.STRING,
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         radio: {
@@ -197,7 +197,7 @@ module.exports = {
           allowNull: true,
         },
       },
-      { 
+      {
         timestamps: false,
       }
     );

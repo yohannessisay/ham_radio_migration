@@ -4,17 +4,17 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('LogBookContacts', {
       firebase_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
         primaryKey: true,
       },
       uid: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
         primaryKey: true,
       },
       id: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true, // Note: notNull=false in schema
         primaryKey: true,
       },
@@ -22,192 +22,192 @@ module.exports = {
       // Required fields
       adi_imported: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
       },
       band: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       call_sign_search_index: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        allowNull: false,
+        type: Sequelize.ARRAY(Sequelize.TEXT),
+        allowNull: true,
       },
       contact_time_stamp: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       contest_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       country: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       date: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       distance: {
         type: Sequelize.DOUBLE,
-        allowNull: false,
+        allowNull: true,
       },
       frequency: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       grid: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       log_book: {
         type: Sequelize.JSONB,
-        allowNull: false,
+        allowNull: true,
       },
       log_book_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_call_sign: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_city: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_coordinates: {
         type: Sequelize.JSONB,
-        allowNull: false,
+        allowNull: true,
       },
       my_country: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_flag_code: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_profile_pic: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_state: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       my_state_long_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       notes: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       power: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       profile_call_sign: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       rst_r_c_v_d: {
-        type: Sequelize.STRING, // ⚠️ Likely typo? Should be TEXT if it's signal report like "59"
-        allowNull: false,
+        type: Sequelize.TEXT, // ⚠️ Likely typo? Should be TEXT if it's signal report like "59"
+        allowNull: true,
       },
       rst_sent: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       state: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       state_long_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       tags: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        allowNull: false,
+        type: Sequelize.ARRAY(Sequelize.TEXT),
+        allowNull: true,
       },
       their_callsign: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       their_coordinates: {
         type: Sequelize.JSONB,
-        allowNull: false,
+        allowNull: true,
       },
       their_country: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       their_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       their_state: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       time: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       timestamp: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       user_grid: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       user_mode: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
 
       // Optional fields
       my_antenna: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       my_radio: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       name_search_index: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       operator: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       qth: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       their_city: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       their_park: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       user_qth: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       active: {
@@ -215,7 +215,7 @@ module.exports = {
         allowNull: true,
       },
       activities: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       activities_data: {
@@ -223,7 +223,7 @@ module.exports = {
         allowNull: true,
       },
       activities_references: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       adi_error: {
@@ -231,11 +231,11 @@ module.exports = {
         allowNull: true,
       },
       adi_file_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
-      contact_string: {
-        type: Sequelize.STRING,
+      contact_TEXT: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       error_message: {
@@ -247,7 +247,7 @@ module.exports = {
         allowNull: true,
       },
       my_activity_references: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       my_park: {
@@ -255,7 +255,7 @@ module.exports = {
         allowNull: true,
       },
       primary_activity: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       raw_data: {
@@ -263,11 +263,11 @@ module.exports = {
         allowNull: true,
       },
       their_activities: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       their_activity_references: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       validation_errors: {
@@ -275,19 +275,19 @@ module.exports = {
         allowNull: true,
       },
       lotw_imported_on: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       lotw_uploaded_on: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       qrz_imported_on: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       qrz_uploaded_on: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       duplicate: {
@@ -295,39 +295,39 @@ module.exports = {
         allowNull: true,
       },
       contest_points: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       continent: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       country_code: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       cw: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       digital: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       dxcc_number: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       exchange_one: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       exchange_two: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       flag_code: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       is_w_f_d_contact: {
@@ -335,23 +335,23 @@ module.exports = {
         allowNull: true,
       },
       item_index: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       their_call_sign: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       voice: {
-        type: Sequelize.SMALLINT,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       app_version: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       contest_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       created_at: {
@@ -359,27 +359,27 @@ module.exports = {
         allowNull: true,
       },
       exchange_four: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       exchange_three: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       my_antenna_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       my_name_search_index: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true,
       },
       my_radio_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       my_saved_location_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       their_address: {
@@ -387,7 +387,7 @@ module.exports = {
         allowNull: true,
       },
       their_profile_pic: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       }
     }, {
