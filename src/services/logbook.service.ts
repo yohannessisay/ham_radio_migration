@@ -1,77 +1,108 @@
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  limit,
-  query,
-  orderBy,
-} from "firebase/firestore";
-import FirebaseService from "./firebase.service.js";
+import { Op } from "sequelize";
 import { LogBook } from "../models/logbook.model.js";
 
 class LogBookService {
-  private db = getFirestore(FirebaseService.getInstance());
+  /**
+   * Fetch paginated, sorted, searchable logbooks
+   */
+  async getLogBooks(options: {
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: 'ASC' | 'DESC';
+    search?: string;
+  }) {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'timestamp',
+      sortOrder = 'DESC',
+      search = '',
+    } = options;
 
-  async fetchLatestFromFirestore(limitCount = 10000) {
-    const logCollection = collection(this.db, "LogBook");
-    const logQuery = query(
-      logCollection,
-      orderBy("timestamp", "desc"),
-      limit(limitCount)
-    );
-    const snapshot = await getDocs(logQuery);
+    const order = sortOrder === 'ASC' ? 'ASC' : 'DESC';
 
-    if (snapshot.empty) {
-      console.log("⚠️ No logbook entries found in Firestore");
-      return [];
+    const allowedSortFields = ['timestamp', 'name', 'callSign', 'uid', 'lastContactTimestamp'];
+    const sortColumn = allowedSortFields.includes(sortBy) ? sortBy : 'timestamp';
+
+    const where: any = {};
+
+    if (search) {
+      where[Op.or] = [
+        { name: { [Op.iLike]: `%${search}%` } },
+        { myCallSign: { [Op.iLike]: `%${search}%` } },
+        { defaultCallSign: { [Op.iLike]: `%${search}%` } },
+        { uid: { [Op.iLike]: `%${search}%` } },
+        { description: { [Op.iLike]: `%${search}%` } },
+      ];
     }
 
-    const logs = snapshot.docs.map((doc) => ({
-      firebase_id: doc.id,
-      uid: (doc.data() as any).uid || (doc.data() as any).userId || null,
-      name: (doc.data() as any).name || null,
-      myAntenna: (doc.data() as any).myAntenna || null,
-      myRadio: (doc.data() as any).myRadio || null,
-      contactCount: (doc.data() as any).contactCount || 0,
-      coordinates: (doc.data() as any).coordinates || null,
-      timestamp: (doc.data() as any).timestamp?.seconds
-        ? new Date((doc.data() as any).timestamp.seconds * 1000)
-        : typeof (doc.data() as any).timestamp === "number"
-        ? new Date((doc.data() as any).timestamp)
-        : null,
-      lastContactTimestamp: (doc.data() as any).lastContactTimestamp?.seconds
-        ? new Date((doc.data() as any).lastContactTimestamp.seconds * 1000)
-        : typeof (doc.data() as any).lastContactTimestamp === "number"
-        ? new Date((doc.data() as any).lastContactTimestamp)
-        : null,
-    }));
+    try {
+      const { count, rows: logbooks } = await LogBook.findAndCountAll({
+        where,
+        limit,
+        offset: (page - 1) * limit,
+        order: [[sortColumn, order]],
+        attributes: {
+          exclude: ['firebase_id'] // Hide internal key
+        }
+      });
 
-    return logs;
+      return {
+        success: true,
+        data: logbooks,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+          hasNext: page * limit < count,
+          hasPrev: page > 1,
+        },
+      };
+    } catch (error) {
+      console.error('LogBookService.getLogBooks error:', error);
+      return {
+        success: false,
+         undefined,
+        message: 'Failed to fetch logbooks',
+      };
+    }
   }
 
-  async insertIntoPostgres(logs: any[]) {
-    if (!logs.length) return 0;
+  /**
+   * Get a single logbook by ID
+   * Assumes `id` is TEXT and part of composite PK — use with `uid` if needed
+   */
+  async getLogBookById(id: string) {
+    if (!id) {
+      return { success: false,  undefined, message: 'LogBook ID is required' };
+    }
 
-    const inserted = await LogBook.bulkCreate(logs, {
-      ignoreDuplicates: true,
-      updateOnDuplicate: [
-        "uid",
-        "name",
-        "myAntenna",
-        "myRadio",
-        "contactCount",
-        "coordinates",
-        "timestamp",
-        "lastContactTimestamp",
-      ],
-    });
-    return inserted.length;
-  }
+    try {
+      const logbook = await LogBook.findOne({
+        where: { id },
+        attributes: {
+          exclude: ['firebase_id']
+        }
+      });
 
-  async syncFromFirestore(limitCount = 10000) {
-    const logs = await this.fetchLatestFromFirestore(limitCount);
-    const insertedCount = await this.insertIntoPostgres(logs);
-    return { totalFetched: logs.length, insertedCount };
+      if (!logbook) {
+        return { success: false,  undefined, message: 'LogBook not found' };  
+      }
+
+      return {
+        success: true,
+         logbook,
+      };
+    } catch (error) {
+      console.error(`LogBookService.getLogBookById(${id}) error:`, error);
+      return {
+        success: false,
+         undefined,
+        message: 'Failed to fetch logbook',
+      };
+    }
   }
 }
 

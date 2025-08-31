@@ -1,6 +1,7 @@
-import { FastifyInstance } from "fastify"; 
-import logbookController from "../controllers/logbook.controller";
+import { FastifyInstance } from "fastify";
+import LogBookController from "../controllers/logbook.controller";
 
-export default async function userRoutes(server: FastifyInstance) { 
-  server.get("/sync-logbook", logbookController.syncLogs);
+export default async function logbookRoutes(server: FastifyInstance) {
+  server.get("/logbooks", LogBookController.getLogBooks);
+  server.get("/logbooks/:id", LogBookController.getLogBookById);
 }
