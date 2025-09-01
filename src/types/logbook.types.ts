@@ -1,0 +1,49 @@
+export interface LogBook {
+  firebase_id: string;
+  id: string;
+  uid: string;
+  last_contact_timestamp: Date;
+  name: string;
+  timestamp: Date;
+  contact_count?: number;
+  default_location?: any; // JSONB type
+  default_call_sign?: string;
+  call_sign_type?: string;
+  logbook_style?: string;
+  my_antenna?: string;
+  my_radio?: string;
+  my_parks?: any; // JSONB type
+  assisted?: string;
+  contest_band?: string;
+  contest_power?: string;
+  default_band?: string;
+  default_frequency?: string;
+  default_mode?: string;
+  default_power?: string;
+  description?: string;
+  number_of_transmitters?: string;
+  operator?: string;
+  adi_file?: string;
+  adi_file_copy?: string;
+  adi_imported?: boolean;
+  duplicate_contacts?: number;
+  error_code?: string;
+  failed_contacts?: number;
+  file_name?: string;
+  import_date?: Date;
+  import_status?: string;
+  locked?: boolean;
+  success_contacts?: number;
+  total_import_contacts?: number;
+  contest?: any; // JSONB type
+  contest_id?: string;
+  first_import?: boolean;
+  last_spotted_at?: Date;
+  last_spotted_band?: string;
+  last_spotted_comment?: string;
+  last_spotted_frequency?: string;
+  last_spotted_mode?: string;
+  log_book_template_id?: string;
+  radio?: any; // JSONB type
+  updated_at?: Date;
+}

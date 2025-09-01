@@ -1,14 +1,14 @@
 {
   "development": {
-    "url": "postgres://postgres:root@localhost:5432/hamradio",
+    "url": "postgres://admin:root@localhost:5432/hamradio",
     "dialect": "postgres"
   },
   "test": {
-    "url": "postgres://postgres:root@localhost:5432/hamradio_test",
+    "url": "postgres://admin:root@localhost:5432/hamradio_test",
     "dialect": "postgres"
   },
   "production": {
-    "url": "postgres://postgres:root@localhost:5432/hamradio_prod",
+    "url": "postgres://admin:root@localhost:5432/hamradio_prod",
     "dialect": "postgres"
   }
 }
