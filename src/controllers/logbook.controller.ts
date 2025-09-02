@@ -27,12 +27,29 @@ class LogBookController {
       if (!result.success) {
         return sendError({ reply, message: result.message });
       }
+ 
+      let paginationInfo = undefined;
+      if (result.pagination) {
+        const currentPage = Number(page) || result.pagination.page || 1;
+        const itemsPerPage = Number(limit) || result.pagination.limit || 10;
+        const totalItems = Number(result.pagination.total) || 0;
+        const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+        paginationInfo = {
+          currentPage,
+          totalPages,
+          totalItems,
+          itemsPerPage,
+          hasNextPage: currentPage < totalPages,
+          hasPreviousPage: currentPage > 1,
+        };
+      }
 
       return sendSuccess({
         reply,
         data: result.data,
         message: "LogBooks fetched successfully",
-        ...(result.pagination && { pagination: result.pagination }),
+        pagination: paginationInfo,
       });
     } catch (err) {
       return sendError({
@@ -66,7 +83,7 @@ class LogBookController {
 
       return sendSuccess({
         reply,
-        data: result.logbook,
+        data: result.data,
         message: "LogBook fetched successfully",
       });
     } catch (err) {

@@ -28,11 +28,29 @@ class LogBookContactController {
         return sendError({ reply, message: result.message });
       }
 
+      // Prepare pagination info if available
+      let paginationInfo = undefined;
+      if (result.pagination) {
+        const currentPage = Number(page) || result.pagination.page || 1;
+        const itemsPerPage = Number(limit) || result.pagination.limit || 10;
+        const totalItems = Number(result.pagination.total) || 0;
+        const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+        paginationInfo = {
+          currentPage,
+          totalPages,
+          totalItems,
+          itemsPerPage,
+          hasNextPage: currentPage < totalPages,
+          hasPreviousPage: currentPage > 1,
+        };
+      }
+
       return sendSuccess({
         reply,
-        data: result.contacts,
+        data: result.data, // was result.contacts
         message: 'Logbook contacts fetched successfully',
-        ...(result.pagination && { pagination: result.pagination }),
+        pagination: paginationInfo,
       });
     } catch (err) {
       return sendError({ reply, message: 'Failed to fetch logbook contacts', error: err });
@@ -58,7 +76,7 @@ class LogBookContactController {
 
       return sendSuccess({
         reply,
-        data: result.contact,
+        data: result.data, // was result.contact
         message: 'Logbook contact fetched successfully',
       });
     } catch (err) {

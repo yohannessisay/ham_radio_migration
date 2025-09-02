@@ -6,13 +6,13 @@ export interface LogBook {
   name: string;
   timestamp: Date;
   contact_count?: number;
-  default_location?: any; // JSONB type
+  default_location?: any; 
   default_call_sign?: string;
   call_sign_type?: string;
   logbook_style?: string;
   my_antenna?: string;
   my_radio?: string;
-  my_parks?: any; // JSONB type
+  my_parks?: any; 
   assisted?: string;
   contest_band?: string;
   contest_power?: string;
@@ -35,7 +35,7 @@ export interface LogBook {
   locked?: boolean;
   success_contacts?: number;
   total_import_contacts?: number;
-  contest?: any; // JSONB type
+  contest?: any; 
   contest_id?: string;
   first_import?: boolean;
   last_spotted_at?: Date;
@@ -44,6 +44,7 @@ export interface LogBook {
   last_spotted_frequency?: string;
   last_spotted_mode?: string;
   log_book_template_id?: string;
-  radio?: any; // JSONB type
+  radio?: any; 
   updated_at?: Date;
+  userProfile?: any; 
 }

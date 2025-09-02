@@ -1,0 +1,14 @@
+{
+  "development": {
+    "url": "postgres://postgres:postgres@localhost:5432/wrl_migration",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "postgres://postgres:postgres@localhost:5432/wrl_migration_test",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "postgres://postgres:postgres@localhost:5432/wrl_migration_prod",
+    "dialect": "postgres"
+  }
+}

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db.config";
+import { sequelize } from "../db/db.config";
 
 export class UserProfile extends Model {}
 

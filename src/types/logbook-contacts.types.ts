@@ -14,11 +14,11 @@ export interface LogbookContacts {
   distance: number;
   frequency: string;
   grid: string;
-  log_book: any; // JSONB type
+  log_book: any; 
   log_book_id: string;
   my_call_sign: string;
   my_city: string;
-  my_coordinates: any; // JSONB type
+  my_coordinates: any; 
   my_country: string;
   my_flag_code: string;
   my_name: string;
@@ -28,13 +28,13 @@ export interface LogbookContacts {
   notes: string;
   power: string;
   profile_call_sign: string;
-  rst_r_c_v_d: Date; // Note: This might need to be string if it's a signal report
+  rst_r_c_v_d: string; 
   rst_sent: string;
   state: string;
   state_long_name: string;
   tags: string[];
   their_callsign: string;
-  their_coordinates: any; // JSONB type
+  their_coordinates: any; 
   their_country: string;
   their_name: string;
   their_state: string;
@@ -55,7 +55,7 @@ export interface LogbookContacts {
   user_qth?: string;
   active?: boolean;
   activities?: string[];
-  activities_data?: any; // JSONB type
+  activities_data?: any; 
   activities_references?: string[];
   adi_error?: boolean;
   adi_file_name?: string;
@@ -63,12 +63,12 @@ export interface LogbookContacts {
   error_message?: string;
   has_validation_errors?: boolean;
   my_activity_references?: string[];
-  my_park?: Date; // Note: This might need to be string if storing park codes
+  my_park?: string;
   primary_activity?: string;
-  raw_data?: any; // JSONB type
+  raw_data?: any; 
   their_activities?: string[];
   their_activity_references?: string[];
-  validation_errors?: any; // JSONB type
+  validation_errors?: any; 
   lotw_imported_on?: string;
   lotw_uploaded_on?: string;
   qrz_imported_on?: string;
@@ -98,4 +98,5 @@ export interface LogbookContacts {
   my_saved_location_id?: string;
   their_address?: string;
   their_profile_pic?: string;
+  userProfile?: any; 
 }

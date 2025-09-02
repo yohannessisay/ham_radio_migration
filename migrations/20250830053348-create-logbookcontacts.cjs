@@ -15,7 +15,7 @@ module.exports = {
       },
       id: {
         type: Sequelize.TEXT,
-        allowNull: true, // Note: notNull=false in schema
+        allowNull: true,
         primaryKey: true,
       },
 
@@ -117,7 +117,7 @@ module.exports = {
         allowNull: true,
       },
       rst_r_c_v_d: {
-        type: Sequelize.TEXT, // ⚠️ Likely typo? Should be TEXT if it's signal report like "59"
+        type: Sequelize.TEXT, 
         allowNull: true,
       },
       rst_sent: {
@@ -251,7 +251,7 @@ module.exports = {
         allowNull: true,
       },
       my_park: {
-        type: Sequelize.TEXT, // ⚠️ Schema says TIMESTAMP but likely should be TEXT (e.g., "PARK-123")
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       primary_activity: {

@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
-import config from "../config/config.json"; // adjust path as needed
+import config from "../../config/firebaseConfig.json"; // adjust path as needed
 
 class FirebaseService {
   private static instance: FirebaseApp;

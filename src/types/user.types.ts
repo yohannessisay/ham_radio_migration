@@ -7,7 +7,7 @@ export interface UserProfile {
   callsignSearchIndex?: string[];
   city?: string;
   continent?: string;
-  coordinates?: any; // JSONB type
+  coordinates?: any; 
   country?: string;
   countryCode?: string;
   cqZone?: number;
@@ -27,38 +27,38 @@ export interface UserProfile {
   lastContactModification?: Date;
   needsAggregation?: boolean;
   numberOfContactsImported?: number;
-  quota?: any; // JSONB type
+  quota?: any; 
   savedLocationId?: string;
   hasStreak?: boolean;
-  streakStats?: any; // JSONB type
+  streakStats?: any; 
   contests?: string[];
   stripeId?: string;
   stripeLink?: string;
   foundingMemberCount?: number;
   membershipStatus?: string;
   numberOfContacts?: number;
-  settings?: any; // JSONB type
-  spottingFilters?: any; // JSONB type
+  settings?: any; 
+  spottingFilters?: any; 
   subscriptionCanceledAt?: string;
   subscriptionCancelOnPeriodEnd?: string;
   subscriptionCreatedAt?: string;
   subscriptionEndedAt?: string;
   subscriptionStatus?: string;
-  bands?: any; // JSONB type
-  modes?: any; // JSONB type
+  bands?: any; 
+  modes?: any; 
   longBio?: string;
   stateLongName?: string;
   admin?: boolean;
   autoExportToQrzLotw?: boolean;
-  defaultLogbookSettings?: any; // JSONB type
+  defaultLogbookSettings?: any; 
   facebook?: string;
   instagram?: string;
   linkedin?: string;
   profilePic?: string;
   twitter?: string;
-  activator?: any; // JSONB type
+  activator?: any; 
   activityGraphRepaired?: boolean;
   bugCount?: number;
-  hunter?: any; // JSONB type
+  hunter?: any; 
   spotsCreated?: number;
 }
