@@ -27,7 +27,7 @@ class LogBookController {
       if (!result.success) {
         return sendError({ reply, message: result.message });
       }
- 
+
       let paginationInfo = undefined;
       if (result.pagination) {
         const currentPage = Number(page) || result.pagination.page || 1;
@@ -60,36 +60,57 @@ class LogBookController {
     }
   }
 
-  /**
-   * GET /logbooks/:id
-   */
-  async getLogBookById(req: FastifyRequest, reply: FastifyReply) {
+  async getLogBooksByUserId(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { id } = req.params as { id: string };
+      const { userId } = req.params as { userId: string };
+      const { page, limit, sortBy, sortOrder } = req.query as {
+        page?: string;
+        limit?: string;
+        sortBy?: string;
+        sortOrder?: "ASC" | "DESC";
+      };
 
-      if (!id) {
+      if (!userId) {
         return sendError({
           reply,
-          message: "LogBook ID is required",
+          message: "User ID is required",
           statusCode: 400,
         });
       }
 
-      const result = await LogBookService.getLogBookById(id);
+      const result = await LogBookService.getLogBooksByUserId(userId, {
+        page: Number(page) || 1,
+        limit: Number(limit) || 50,
+        sortBy: sortBy || "timestamp",
+        sortOrder: sortOrder === "ASC" ? "ASC" : "DESC",
+      });
 
       if (!result.success) {
         return sendError({ reply, message: result.message, statusCode: 404 });
       }
+ 
+      const totalItems = result.pagination?.total ?? 0;
+      const currentPage = Number(page) || result.pagination?.page || 1;
+      const itemsPerPage = Number(limit) || result.pagination?.limit || 10;
+      const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
 
       return sendSuccess({
         reply,
         data: result.data,
-        message: "LogBook fetched successfully",
+        message: "Logbook contacts fetched successfully",
+        pagination: {
+          currentPage,
+          totalPages,
+          totalItems,
+          itemsPerPage,
+          hasNextPage: currentPage < totalPages,
+          hasPreviousPage: currentPage > 1,
+        },
       });
     } catch (err) {
       return sendError({
         reply,
-        message: "Failed to fetch logbook",
+        message: "Failed to fetch logbooks by user",
         error: err,
       });
     }

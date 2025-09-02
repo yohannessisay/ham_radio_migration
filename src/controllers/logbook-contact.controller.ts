@@ -48,7 +48,7 @@ class LogBookContactController {
 
       return sendSuccess({
         reply,
-        data: result.data, // was result.contacts
+        data: result.data,  
         message: 'Logbook contacts fetched successfully',
         pagination: paginationInfo,
       });
@@ -56,31 +56,54 @@ class LogBookContactController {
       return sendError({ reply, message: 'Failed to fetch logbook contacts', error: err });
     }
   }
-
-  /**
-   * GET /logbook-contacts/:id
-   */
-  async getLogBookContactById(req: FastifyRequest, reply: FastifyReply) {
+ 
+  async getLogBookContactsByUserId(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { id } = req.params as { id: string };
+      const { userId } = req.params as { userId: string };
+      const { page, limit, sortBy, sortOrder } = req.query as {
+        page?: string;
+        limit?: string;
+        sortBy?: string;
+        sortOrder?: "ASC" | "DESC";
+      };
 
-      if (!id) {
-        return sendError({ reply, message: 'Contact ID is required', statusCode: 400 });
+      if (!userId) {
+        return sendError({ reply, message: 'User ID is required', statusCode: 400 });
       }
 
-      const result = await LogBookContactService.getLogBookContactById(id);
+      const result = await LogBookContactService.getLogBookContactsByUserId({
+        userId,
+        page: Number(page) || 1,
+        limit: Number(limit) || 10,
+        sortBy: sortBy || "timestamp",
+        sortOrder: sortOrder === "ASC" ? "ASC" : "DESC",
+      });
 
       if (!result.success) {
         return sendError({ reply, message: result.message, statusCode: 404 });
       }
 
+      // Build pagination info
+      const totalItems = result.pagination?.total ?? 0;
+      const currentPage = Number(page) || result.pagination?.page || 1;
+      const itemsPerPage = Number(limit) || result.pagination?.limit || 10;
+      const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
       return sendSuccess({
         reply,
-        data: result.data, // was result.contact
-        message: 'Logbook contact fetched successfully',
+        data: result.data,
+        message: 'Logbook contacts fetched successfully',
+        pagination: {
+          currentPage,
+          totalPages,
+          totalItems,
+          itemsPerPage,
+          hasNextPage: currentPage < totalPages,
+          hasPreviousPage: currentPage > 1,
+        },
       });
     } catch (err) {
-      return sendError({ reply, message: 'Failed to fetch logbook contact', error: err });
+      return sendError({ reply, message: 'Failed to fetch logbook contacts by user', error: err });
     }
   }
 }

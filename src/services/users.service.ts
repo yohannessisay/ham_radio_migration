@@ -63,9 +63,18 @@ class UserService {
         limit,
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
-        attributes: {
-          exclude: ['firebase_id'] 
-        }
+        attributes: [
+          "profilePic",
+          "callSign",
+          "firstName",
+          "lastName",
+          "email",
+          "city",
+          "state",
+          "country",
+          "membershipStatus",
+          "timestamp",
+        ],
       });
 
       return {

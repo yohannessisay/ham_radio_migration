@@ -42,7 +42,7 @@ class LogBookService {
       where[Op.or] = [
         { name: { [Op.iLike]: `%${search}%` } },
         { myCallSign: { [Op.iLike]: `%${search}%` } },
-        { defaultCallSign: { [Op.iLike]: `%${search}%` } },  
+        { defaultCallSign: { [Op.iLike]: `%${search}%` } },
       ];
     }
     if (country) {
@@ -55,52 +55,21 @@ class LogBookService {
         limit,
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
-        attributes: {
-          exclude: ["firebase_id"], // Hide internal key
-        },
+        attributes: [
+          "name",
+          "default_call_sign",
+          "contact_count",
+          "default_mode",
+          "default_frequency",
+          "timestamp",
+          "last_contact_timestamp",
+        ],
       });
 
       const totalPages = Math.ceil(count / limit);
 
-      // Batch load user profiles to avoid N+1
-      const uids = Array.from(
-        new Set(
-          logbooks
-            .map((lb: any) => lb?.uid)
-            .filter((uid: string | null | undefined) => !!uid)
-        )
-      );
-
-      let usersByUid = new Map<string, any>();
-      if (uids.length > 0) {
-        const users = await UserProfile.findAll({
-          where: { uid: { [Op.in]: uids } as any },
-          attributes: [
-            "uid",
-            "callSign",
-            "email",
-            "firstName",
-            "lastName",
-            "country",
-            "state",
-            "city",
-            "gridSquare",
-            "profilePic",
-            "timestamp",
-          ],
-        });
-        usersByUid = new Map(
-          users.map((u: any) => [u.uid, u.get({ plain: true })])
-        );
-      }
-
-      const dataWithUser = logbooks.map((lb: any) => {
-        const plain = lb.get({ plain: true });
-        return {
-          ...plain,
-          userProfile: usersByUid.get(plain.uid) ?? null,
-        };
-      });
+      // Return only selected fields; no userProfile on list
+      const dataWithUser = logbooks.map((lb: any) => lb.get({ plain: true }));
 
       return {
         success: true,
@@ -129,70 +98,98 @@ class LogBookService {
   }
 
   /**
-   * Get a single logbook by ID
-   * Assumes `id` is TEXT and part of composite PK — use with `uid` if needed
+   * Get all logbooks for a userId (uid) with full data and userProfile
    */
-  async getLogBookById(id: string) {
-    if (!id) {
-      return {
-        success: false,
-        data: undefined,
-        message: "LogBook ID is required",
-      };
+  async getLogBooksByUserId(
+    userId: string,
+    options: {
+      page?: number;
+      limit?: number;
+      sortBy?: string;
+      sortOrder?: "ASC" | "DESC";
     }
-
+  ) {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = "timestamp",
+      sortOrder = "DESC",
+    } = options;
+    const safeLimit = Math.min(Math.max(Number(limit) || 10, 1), 100);
+    const order = sortOrder === "ASC" ? "ASC" : "DESC";
+    const allowedSortFields = [
+      "timestamp",
+      "contact_time_stamp",
+      "their_callsign",
+      "my_call_sign",
+      "band",
+      "frequency",
+      "country",
+      "state",
+      "uid",
+    ];
+    const sortColumn = allowedSortFields.includes(sortBy)
+      ? sortBy
+      : "timestamp";
     try {
-      const logbook = await LogBook.findOne({
-        where: { id },
+     const { count, rows: logbooks } = await LogBook.findAndCountAll({
+        where: { uid: userId },
+        limit: safeLimit,
+        offset: (page - 1) * safeLimit,
+        order: [[sortColumn, order]],
         attributes: {
           exclude: ["firebase_id"],
         },
       });
 
-      if (!logbook) {
+      // Load user profile once
+      const users = await UserProfile.findAll({
+        where: { uid: userId as any },
+        attributes: [
+          "uid",
+          "callSign",
+          "email",
+          "firstName",
+          "lastName",
+          "country",
+          "state",
+          "city",
+          "gridSquare",
+          "profilePic",
+          "timestamp",
+        ],
+      });
+      const userProfile = users[0]?.get({ plain: true }) ?? null;
+
+      const data = logbooks.map((lb: any) => {
+        const plain = lb.get({ plain: true });
         return {
-          success: false,
-          data: undefined,
-          message: "LogBook not found",
-        };
-      }
-
-      // Load related user profile (single extra query)
-      let userProfile: any = null;
-      const lbPlain = logbook.get({ plain: true }) as any;
-      if (lbPlain?.uid) {
-        const user = await UserProfile.findOne({
-          where: { uid: lbPlain.uid },
-          attributes: [
-            "uid",
-            "callSign",
-            "email",
-            "firstName",
-            "lastName",
-            "country",
-            "state",
-            "city",
-            "gridSquare",
-            "profilePic",
-            "timestamp",
-          ],
-        });
-        userProfile = user ? user.get({ plain: true }) : null;
-      }
-
-      return {
-        success: true,
-        data: {
-          ...lbPlain,
+          ...plain,
           userProfile,
+        };
+      });
+
+       return {
+        success: true,
+        data,
+        pagination: {
+          total: count,
+          page,
+          limit: safeLimit,
+          totalPages: Math.ceil(count / safeLimit),
+          hasNext: page * safeLimit < count,
+          hasPrev: page > 1,
         },
       };
     } catch (error) {
-      console.error(`LogBookService.getLogBookById(${id}) error:`, error);
+      console.error(
+        `LogBookService.getLogBooksByUserId(${userId}) error:`,
+        error
+      );
       return {
         success: false,
         data: undefined,
-        message: "Failed to fetch logbook",
+        message: "Failed to fetch logbooks by user",
       };
     }
   }

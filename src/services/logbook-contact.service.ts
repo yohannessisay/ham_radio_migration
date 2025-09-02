@@ -60,56 +60,23 @@ class LogBookContactService {
         limit,
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
-        attributes: {
-          exclude: ["firebase_id"], // Hide internal key
-        },
+        attributes: [
+          "their_callsign",
+          "their_name",
+          "their_country",
+          "frequency",
+          "user_mode",
+          "timestamp",
+        ],
       });
 
       const totalPages = Math.ceil(count / limit);
 
-      // Batch load user profiles to avoid N+1
-      const uids = Array.from(
-        new Set(
-          contacts
-            .map((c: any) => c?.uid)
-            .filter((uid: string | null | undefined) => !!uid)
-        )
-      );
-
-      let usersByUid = new Map<string, any>();
-      if (uids.length > 0) {
-        const users = await UserProfile.findAll({
-          where: { uid: { [Op.in]: uids } as any },
-          attributes: [
-            "uid",
-            "callSign",
-            "email",
-            "firstName",
-            "lastName",
-            "country",
-            "state",
-            "city",
-            "gridSquare",
-            "profilePic",
-            "timestamp",
-          ],
-        });
-        usersByUid = new Map(
-          users.map((u: any) => [u.uid, u.get({ plain: true })])
-        );
-      }
-
-      const dataWithUser = contacts.map((c: any) => {
-        const plain = c.get({ plain: true });
-        return {
-          ...plain,
-          userProfile: usersByUid.get(plain.uid) ?? null,
-        };
-      });
+      const data = contacts.map((c: any) => c.get({ plain: true }));
 
       return {
         success: true,
-        data: dataWithUser,
+        data,
         pagination: {
           total: count,
           currentPage: page,
@@ -134,72 +101,98 @@ class LogBookContactService {
   }
 
   /**
-   * Get a single logbook contact by ID
+   * Get all logbook contacts for a userId (uid) with full data and userProfile
    */
-  async getLogBookContactById(id: string) {
-    if (!id) {
-      return {
-        success: false,
-        data: undefined,
-        message: "Contact ID is required",
-      };
-    }
+  async getLogBookContactsByUserId(options: {
+    userId: string;
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: "ASC" | "DESC";
+  }) {
+    const {
+      userId,
+      page = 1,
+      limit = 10,
+      sortBy = "timestamp",
+      sortOrder = "DESC",
+    } = options;
+
+ 
+    const safeLimit = Math.min(Math.max(Number(limit) || 10, 1), 100);
+    const order = sortOrder === "ASC" ? "ASC" : "DESC";
+    const allowedSortFields = [
+      "timestamp",
+      "contact_time_stamp",
+      "their_callsign",
+      "my_call_sign",
+      "band",
+      "frequency",
+      "country",
+      "state",
+      "uid",
+    ];
+    const sortColumn = allowedSortFields.includes(sortBy) ? sortBy : "timestamp";
 
     try {
-      const contact = await LogbookContacts.findOne({
-        where: { id },
+      const { count, rows: contacts } = await LogbookContacts.findAndCountAll({
+        where: { uid: userId },
+        limit: safeLimit,
+        offset: (page - 1) * safeLimit,
+        order: [[sortColumn, order]],
         attributes: {
           exclude: ["firebase_id"],
         },
       });
 
-      if (!contact) {
-        return {
-          success: false,
-          data: undefined,
-          message: "Logbook contact not found",
-        };
-      }
+      // Load the related user profile once
+      const user = await UserProfile.findOne({
+        where: { uid: userId },
+        attributes: [
+          "uid",
+          "callSign",
+          "email",
+          "firstName",
+          "lastName",
+          "country",
+          "state",
+          "city",
+          "gridSquare",
+          "profilePic",
+          "timestamp",
+        ],
+      });
+      const userProfile = user ? user.get({ plain: true }) : null;
 
-      // Load related user profile (single extra query)
-      let userProfile: any = null;
-      const contactPlain = contact.get({ plain: true }) as any;
-      if (contactPlain?.uid) {
-        const user = await UserProfile.findOne({
-          where: { uid: contactPlain.uid },
-          attributes: [
-            "uid",
-            "callSign",
-            "email",
-            "firstName",
-            "lastName",
-            "country",
-            "state",
-            "city",
-            "gridSquare",
-            "profilePic",
-            "timestamp",
-          ],
-        });
-        userProfile = user ? user.get({ plain: true }) : null;
-      }
+      const data = contacts.map((c: any) => {
+        const plain = c.get({ plain: true });
+        return {
+          ...plain,
+          userProfile,
+        };
+      });
 
       return {
         success: true,
-        data: {
-          ...contactPlain,
-          userProfile,
+        data,
+        pagination: {
+          total: count,
+          page,
+          limit: safeLimit,
+          totalPages: Math.ceil(count / safeLimit),
+          hasNext: page * safeLimit < count,
+          hasPrev: page > 1,
         },
       };
     } catch (error) {
       console.error(
-        `LogBookContactService.getLogBookContactById(${id}) error:`,
+        `LogBookContactService.getLogBookContactsByUserId(${userId}) error:`,
         error
       );
       return {
         success: false,
         data: undefined,
-        message: "Failed to fetch logbook contact",
+        message: "Failed to fetch logbook contacts by user",
       };
     }
   }
