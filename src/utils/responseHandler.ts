@@ -1,10 +1,20 @@
 import { FastifyReply } from "fastify";
 
+interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
 interface SuccessOptions<T = any> {
   reply: FastifyReply;
   data?: T;
   message?: string;
   statusCode?: number;
+  pagination?: PaginationInfo;
 }
 
 interface ErrorOptions {
@@ -19,12 +29,26 @@ export const sendSuccess = <T = any>({
   data,
   message = "Success",
   statusCode = 200,
+  pagination,
 }: SuccessOptions<T>) => {
-  return reply.status(statusCode).send({
+  const response: any = {
     status: "success",
     message,
     data: data ?? null,
-  });
+  };
+
+  if (pagination) {
+    response.pagination = {
+      currentPage: pagination.currentPage,
+      totalPages: pagination.totalPages,
+      totalItems: pagination.totalItems,
+      itemsPerPage: pagination.itemsPerPage,
+      hasNextPage: pagination.hasNextPage,
+      hasPreviousPage: pagination.hasPreviousPage,
+    };
+  }
+
+  return reply.status(statusCode).send(response);
 };
 
 export const sendError = ({

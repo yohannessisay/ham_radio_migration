@@ -11,6 +11,7 @@ class UserService {
     sortBy?: string;
     sortOrder?: 'ASC' | 'DESC';
     search?: string;
+    country?: string;
   }) {
     const {
       page = 1,
@@ -18,6 +19,7 @@ class UserService {
       sortBy = 'timestamp',
       sortOrder = 'DESC',
       search = '',
+      country = '',
     } = options;
 
     // Validate sortOrder
@@ -49,6 +51,11 @@ class UserService {
         { city: { [Op.iLike]: `%${search}%` } },
       ];
     }
+    if (country) {
+      where[Op.and] = [
+        { country: { [Op.iLike]: `%${country}%` } },
+      ];
+    }
 
     try {
       const { count, rows: users } = await UserProfile.findAndCountAll({
@@ -57,7 +64,7 @@ class UserService {
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
         attributes: {
-          exclude: ['firebase_id'] // Optional: hide sensitive/internal fields
+          exclude: ['firebase_id'] 
         }
       });
 
@@ -93,7 +100,7 @@ class UserService {
 
     try {
       const user = await UserProfile.findOne({
-        where: { uid }, // or { firebase_id: uid } — depends on your PK
+        where: { uid },  
         attributes: {
           exclude: ['firebase_id'] // hide internal key
         }

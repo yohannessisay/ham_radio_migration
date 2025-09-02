@@ -8,12 +8,13 @@ class UserController {
    */
   async getUsers(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { page, limit, sortBy, sortOrder, search } = req.query as {
+      const { page, limit, sortBy, sortOrder, search,country} = req.query as {
         page?: string;
         limit?: string;
         sortBy?: string;
         sortOrder?: 'ASC' | 'DESC';
-        search?: string;
+        search?: string; 
+        country?: string;
       };
 
       const result = await usersService.getUsers({
@@ -21,18 +22,37 @@ class UserController {
         limit: Number(limit) || 10,
         sortBy: sortBy || "timestamp",
         sortOrder: sortOrder === 'ASC' ? 'ASC' : 'DESC',
-        search: search || '',
+        search: search || '', 
+        country: country || '',
       });
 
       if (!result.success) {
         return sendError({ reply, message: result.message });
       }
 
+      // Prepare pagination info if available
+      let paginationInfo = undefined;
+      if (result.pagination) {
+        const currentPage = Number(page) || 1;
+        const itemsPerPage = Number(limit) || 10;
+        const totalItems = result.pagination.total || 0;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        paginationInfo = {
+          currentPage,
+          totalPages,
+          totalItems,
+          itemsPerPage,
+          hasNextPage: currentPage < totalPages,
+          hasPreviousPage: currentPage > 1,
+        };
+      }
+
       return sendSuccess({
         reply,
         data: result.data,
         message: result.message || "Users fetched successfully",
-        ...(result.pagination && { pagination: result.pagination }),
+        pagination: paginationInfo,
       });
     } catch (err) {
       return sendError({ reply, message: "Failed to fetch users", error: err });

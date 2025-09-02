@@ -4,7 +4,18 @@ import FirebaseService from "./src/services/firebase.service.js";
 import syncRoutes from "./src/routes/sync.route.ts";
 import logbookRoutes from "./src/routes/logbook.route.ts";
 import logbookContactRoutes from "./src/routes/logbook-contact.route.ts";
+
 const server = Fastify();
+
+// Register CORS plugin
+server.register(import('@fastify/cors'), {
+  origin: [
+    'http://localhost:8000', 
+    'http://127.0.0.1:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+});
 
 FirebaseService.getInstance();
 
@@ -12,7 +23,6 @@ server.register(userRoutes);
 server.register(syncRoutes);
 server.register(logbookRoutes);
 server.register(logbookContactRoutes);
-
 
 const start = async () => {
   try {

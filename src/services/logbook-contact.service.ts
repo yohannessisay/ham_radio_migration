@@ -61,14 +61,20 @@ class LogBookContactService {
         }
       });
 
+      const totalPages = Math.ceil(count / limit);
+
       return {
         success: true,
-         contacts,
+        data: contacts,
         pagination: {
           total: count,
+          currentPage: page,
+          totalPages,
+          itemsPerPage: limit,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1, 
           page,
           limit,
-          totalPages: Math.ceil(count / limit),
           hasNext: page * limit < count,
           hasPrev: page > 1,
         },
@@ -77,7 +83,7 @@ class LogBookContactService {
       console.error('LogBookContactService.getLogBookContacts error:', error);
       return {
         success: false,
-         undefined, 
+        data: undefined, 
         message: 'Failed to fetch logbook contacts',
       };
     }
@@ -88,7 +94,7 @@ class LogBookContactService {
    */
   async getLogBookContactById(id: string) {
     if (!id) {
-      return { success: false,  undefined, message: 'Contact ID is required' };
+      return { success: false, data: undefined, message: 'Contact ID is required' };
     }
 
     try {
@@ -100,18 +106,18 @@ class LogBookContactService {
       });
 
       if (!contact) {
-        return { success: false,  undefined, message: 'Logbook contact not found' };
+        return { success: false, data: undefined, message: 'Logbook contact not found' };
       }
 
       return {
         success: true,
-         contact,
+        data: contact,
       };
     } catch (error) {
       console.error(`LogBookContactService.getLogBookContactById(${id}) error:`, error);
       return {
         success: false,
-         undefined,
+        data: undefined,
         message: 'Failed to fetch logbook contact',
       };
     }
