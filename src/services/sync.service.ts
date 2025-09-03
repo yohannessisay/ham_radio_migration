@@ -219,66 +219,41 @@ class SyncService {
 
       // Optional fields
       defaultLocation: this.toJSON(data.defaultLocation),
-      defaultCallSign:
-        typeof data.defaultCallSign === "string" ? data.defaultCallSign : null,
-      callSignType:
-        typeof data.callSignType === "string" ? data.callSignType : null,
-      logbookStyle:
-        typeof data.logbookStyle === "string" ? data.logbookStyle : null,
+      defaultCallSign: data.defaultCallSign ?? null,
+      callSignType: data.callSignType,
+      logbookStyle: data.logbookStyle,
       myParks: this.toJSON(data.myParks),
-      assisted: typeof data.assisted === "string" ? data.assisted : null,
-      contestBand:
-        typeof data.contestBand === "string" ? data.contestBand : null,
-      contestPower:
-        typeof data.contestPower === "string" ? data.contestPower : null,
-      defaultBand:
-        typeof data.defaultBand === "string" ? data.defaultBand : null,
-      defaultFrequency:
-        typeof data.defaultFrequency === "string"
-          ? data.defaultFrequency
-          : null,
-      defaultMode:
-        typeof data.defaultMode === "string" ? data.defaultMode : null,
-      defaultPower:
-        typeof data.defaultPower === "string" ? data.defaultPower : null,
-      description:
-        typeof data.description === "string" ? data.description : null,
-      numberOfTransmitters:
-        typeof data.numberOfTransmitters === "string"
-          ? data.numberOfTransmitters
-          : null,
-      operator: typeof data.operator === "string" ? data.operator : null,
-      adiFile: typeof data.adiFile === "string" ? data.adiFile : null,
-      adiFileCopy:
-        typeof data.adiFileCopy === "string" ? data.adiFileCopy : null,
+      assisted: data.assisted,
+      contestBand: data.contestBand ?? null,
+      contestPower: data.contestPower ?? null,
+      defaultBand: data.defaultBand ?? null,
+      defaultFrequency: data.defaultFrequency ?? null,
+      defaultMode: data.defaultMode ?? null,
+      defaultPower: data.defaultPower ?? null,
+      description: data.description ?? null,
+      numberOfTransmitters: data.numberOfTransmitters ?? null,
+      operator: data.operator ?? null,
+      adiFile: data.adiFile ?? null,
+      adiFileCopy: data.adiFileCopy ?? null,
       adiImported: this.toBoolean(data.adiImported),
       duplicateContacts: this.toNumber(data.duplicateContacts),
-      errorCode: typeof data.errorCode === "string" ? data.errorCode : null,
+      errorCode: data.errorCode ?? null,
       failedContacts: this.toNumber(data.failedContacts),
-      fileName: typeof data.fileName === "string" ? data.fileName : null,
+      fileName: data.fileName ?? null,
       importDate: this.toDate(data.importDate),
-      importStatus:
-        typeof data.importStatus === "string" ? data.importStatus : null,
+      importStatus: data.importStatus ?? null,
       locked: this.toBoolean(data.locked),
       successContacts: this.toNumber(data.successContacts),
       totalImportContacts: this.toNumber(data.totalImportContacts),
       contest: this.toJSON(data.contest),
-      contestId: typeof data.contestId === "string" ? data.contestId : null,
+      contestId: data.contestId ?? null,
       firstImport: this.toBoolean(data.firstImport),
       lastSpottedAt: this.toDate(data.lastSpottedAt),
-      lastSpottedBand:
-        typeof data.lastSpottedBand === "string" ? data.lastSpottedBand : null,
-      lastSpottedComment:
-        typeof data.lastSpottedComment === "string"
-          ? data.lastSpottedComment
-          : null,
-      lastSpottedFrequency: this.toDate(data.lastSpottedFrequency), // ⚠️ likely should be TEXT
-      lastSpottedMode:
-        typeof data.lastSpottedMode === "string" ? data.lastSpottedMode : null,
-      logBookTemplateId:
-        typeof data.logBookTemplateId === "string"
-          ? data.logBookTemplateId
-          : null,
+      lastSpottedBand: data.lastSpottedBand ?? null,
+      lastSpottedComment: data.lastSpottedComment ?? null,
+      lastSpottedFrequency: data.lastSpottedFrequency, // ⚠️ likely should be TEXT
+      lastSpottedMode: data.lastSpottedMode ?? null,
+      logBookTemplateId: data.logBookTemplateId ?? null,
       radio: this.toJSON(data.radio),
       updatedAt: this.toDate(data.updatedAt),
     };
@@ -512,7 +487,9 @@ class SyncService {
           try {
             await model.upsert(record, { validate: false });
             insertedTotal++;
-          } catch (e) {}
+          } catch (e) {
+            console.error(`Upsert failed for ${collectionName}:`, e);
+          }
         }
       }
 

@@ -74,6 +74,7 @@ class LogBookContactService {
           "frequency",
           "user_mode",
           "timestamp",
+          "id", 
         ],
       });
 
