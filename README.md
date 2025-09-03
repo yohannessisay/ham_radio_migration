@@ -1,6 +1,6 @@
 # WRL Migration
 
-A TypeScript Fastify service that migrates Firestore collections into a PostgreSQL database using Sequelize. It also exposes routes to query user profiles, logbooks, and contacts.
+A TypeScript Fastify service that migrates Firestore collections into a PostgreSQL database using Sequelize. It also exposes routes to query user profiles, logbooks, contacts,sync data and get structure of a pre-defined firebase collection.
 
 ## Tech Stack
 
@@ -86,7 +86,8 @@ Base URL: http://localhost:4000
 - Users — list (supports page, limit, sortBy, sortOrder, search, country)
 
 ```bash
-curl "http://localhost:4000/users?page=1&limit=10&sortBy=timestamp&sortOrder=DESC&search=doe&country=US"
+curl --location 'http://localhost:4000/users?page=1&limit=10&sortBy=timestamp&sortOrder=DESC'
+
 ```
 
 - Users — get by id
@@ -98,7 +99,7 @@ curl "http://localhost:4000/users/USER_UID_HERE"
 - Logbooks — list (supports page, limit, sortBy, sortOrder, search)
 
 ```bash
-curl "http://localhost:4000/logbooks?page=1&limit=10&sortBy=timestamp&sortOrder=DESC&search=contest"
+curl "http://localhost:4000/logbooks?page=1&limit=10&sortBy=timestamp&sortOrder=DESC"
 ```
 
 - Logbooks — get by id
@@ -107,6 +108,11 @@ curl "http://localhost:4000/logbooks?page=1&limit=10&sortBy=timestamp&sortOrder=
 curl "http://localhost:4000/logbooks/LOGBOOK_ID_HERE"
 ```
 
+- Logbooks — get by user id
+
+  ```
+  curl --location 'http://localhost:4000/logbooks/getByUserId/USER_ID_HERE'
+  ```
 - Logbook contacts — list (supports page, limit, sortBy, sortOrder, search)
 
 ```bash
@@ -119,12 +125,28 @@ curl "http://localhost:4000/logbook-contacts?page=1&limit=10&sortBy=timestamp&so
 curl "http://localhost:4000/logbook-contacts/CONTACT_ID_HERE"
 ```
 
+* Logbook contacts — get by user id
+
+  ```
+  curl --location 'http://localhost:4000/contacts/getByUserId/USER_ID_HERE'
+  ```
+* Sync from firebase to postgres
+
+  ```
+  curl --location 'http://localhost:4000/sync-all'
+  ```
+* Get structure of predefined collection from firestore
+
+  ```
+  curl --location 'http://localhost:4000/get-structure'
+  ```
+
 ## Notes
 
 - CORS is enabled for localhost origins in index.ts.
+- The script to convert and dump converted data to postgres now can easily be run with the sync-all api call as listed above
 - Sequelize is configured for Postgres; ensure DATABASE_URL is valid.
 
 ## Improvements (future)
 
-- Unify module system and imports (ESM vs CJS) and normalize .ts/.js import extensions for consistency.
 - Add request validation (e.g., zod/TypeBox) and basic tests for services/controllers.

@@ -25,7 +25,7 @@ class SyncController {
 
   async getStructure(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const result = await generateColumnsService.getCollectionStructure("logbooks");
+      const result = await generateColumnsService.getCollectionStructure("UserProfile");
       return reply.send({
         success: true,
         message: "✅ Firestore structure fetched successfully",
