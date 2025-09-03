@@ -52,8 +52,7 @@ class LogBookService {
         order: [[sortColumn, order]],
         attributes: [
           "name", 
-          "timestamp", 
-          "uid",
+          "timestamp",  
           "id",
         ],
       });
