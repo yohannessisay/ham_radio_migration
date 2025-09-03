@@ -115,6 +115,38 @@ class LogBookController {
       });
     }
   }
+
+  async getLogBookById(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+
+      if (!id) {
+        return sendError({
+          reply,
+          message: "LogBook ID is required",
+          statusCode: 400,
+        });
+      }
+
+      const result = await LogBookService.getLogBookById({ id });
+
+      if (!result.success) {
+        return sendError({ reply, message: result.message, statusCode: 404 });
+      }
+
+      return sendSuccess({
+        reply,
+        data: result.data,
+        message: "LogBook fetched successfully",
+      });
+    } catch (err) {
+      return sendError({
+        reply,
+        message: "Failed to fetch logbook by ID",
+        error: err,
+      });
+    }
+  }
 }
 
 export default new LogBookController();

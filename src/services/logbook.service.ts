@@ -177,6 +177,49 @@ class LogBookService {
       };
     }
   }
+
+  async getLogBookById(options: { id: string }) {
+   const { id } = options;
+    try {
+      const logbook = await LogBook.findOne({
+        where: { id },
+      });
+
+      if (!logbook) {
+        return {
+          success: false,
+          data: undefined,
+          message: "Logbook not found",
+        };
+      }
+      let logbookData = logbook.get({ plain: true });
+      const userProfile = await UserProfile.findOne({
+        where: { uid: logbookData.uid },
+      });
+      const userProfileData = userProfile
+        ? userProfile.get({ plain: true })
+        : null;
+
+      return {
+        success: true,
+        data: {
+          ...logbookData,
+          userProfile: userProfileData,
+        },
+        message: "Logbook found",
+      };
+    } catch (error) {
+      console.error(
+        `LogBookService.getLogBookById(${id}) error:`,
+        error
+      );
+      return {
+        success: false,
+        data: undefined,
+        message: "Failed to fetch logbook by id",
+      };
+    }
+  }
 }
 
 export default new LogBookService();
