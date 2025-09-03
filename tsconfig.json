@@ -13,6 +13,6 @@
     "rootDir": ".",
     "noEmit": false
   },
-  "include": ["index.ts", "src/**/*.ts"],
+  "include": ["index.ts", "src/**/*.ts", "api/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
