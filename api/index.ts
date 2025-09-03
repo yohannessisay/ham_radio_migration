@@ -10,7 +10,7 @@ import serverless from "serverless-http";
 const server = Fastify();
 
 // Register CORS
-await server.register(import("@fastify/cors"), {
+server.register(import("@fastify/cors"), {
   origin: [
     "http://localhost:8000",
     "http://127.0.0.1:3000"
