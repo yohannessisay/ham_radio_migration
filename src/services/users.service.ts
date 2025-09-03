@@ -58,7 +58,8 @@ class UserService {
         limit,
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
-        attributes: [
+        attributes: [ 
+          "uid",
           "profilePic",
           "callSign",
           "firstName",

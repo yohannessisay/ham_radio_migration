@@ -53,6 +53,8 @@ class LogBookService {
         attributes: [
           "name", 
           "timestamp", 
+          "uid",
+          "id",
         ],
       });
 

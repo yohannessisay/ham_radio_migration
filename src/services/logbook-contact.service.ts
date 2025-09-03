@@ -27,11 +27,7 @@ class LogBookContactService {
 
     const order = sortOrder === "ASC" ? "ASC" : "DESC";
 
-    const allowedSortFields = [
-      "timestamp", 
-      "their_callsign",
-      "my_call_sign",  
-    ];
+    const allowedSortFields = ["timestamp", "their_callsign", "my_call_sign"];
     const sortColumn = allowedSortFields.includes(sortBy)
       ? sortBy
       : "timestamp";
@@ -162,6 +158,7 @@ class LogBookContactService {
         where: { uid: userId },
         attributes: [
           "uid",
+          "id",
           "callSign",
           "email",
           "firstName",
@@ -205,6 +202,49 @@ class LogBookContactService {
         success: false,
         data: undefined,
         message: "Failed to fetch logbook contacts by user",
+      };
+    }
+  }
+
+  async getLogBookContactsById(options: { id: string }) {
+    const { id } = options;
+    try {
+      const contact = await LogbookContacts.findOne({
+        where: { id },
+      });
+
+      if (!contact) {
+        return {
+          success: false,
+          data: undefined,
+          message: "Logbook contact not found",
+        };
+      }
+      let contactData = contact.get({ plain: true });
+      const userProfile = await UserProfile.findOne({
+        where: { uid: contactData.uid },
+      });
+      const userProfileData = userProfile
+        ? userProfile.get({ plain: true })
+        : null;
+
+      return {
+        success: true,
+        data: {
+          ...contactData,
+          userProfile: userProfileData,
+        },
+        message: "Logbook contact found",
+      };
+    } catch (error) {
+      console.error(
+        `LogBookContactService.getLogBookContactsById(${id}) error:`,
+        error
+      );
+      return {
+        success: false,
+        data: undefined,
+        message: "Failed to fetch logbook contact by id",
       };
     }
   }

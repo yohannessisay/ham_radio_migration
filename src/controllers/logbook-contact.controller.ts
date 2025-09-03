@@ -109,6 +109,25 @@ class LogBookContactController {
       return sendError({ reply, message: 'Failed to fetch logbook contacts by user', error: err });
     }
   }
+
+  async getLogBookContactsById(req: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+      const result = await LogBookContactService.getLogBookContactsById({ id });
+
+      if (!result.success) {
+        return sendError({ reply, message: result.message, statusCode: 404 });
+      }
+
+      return sendSuccess({
+        reply,
+        data: result.data,
+        message: 'Logbook contact fetched successfully',
+      });
+    } catch (err) {
+      return sendError({ reply, message: 'Failed to fetch logbook contact', error: err });
+    }
+  }
 }
 
 export default new LogBookContactController();

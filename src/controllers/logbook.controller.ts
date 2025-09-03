@@ -97,7 +97,7 @@ class LogBookController {
       return sendSuccess({
         reply,
         data: result.data,
-        message: "Logbook contacts fetched successfully",
+        message: "Logbooks fetched successfully",
         pagination: {
           currentPage,
           totalPages,
