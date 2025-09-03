@@ -27,10 +27,7 @@ class LogBookService {
 
     const allowedSortFields = [
       "timestamp",
-      "name",
-      "callSign",
-      "uid",
-      "lastContactTimestamp",
+      "name", 
     ];
     const sortColumn = allowedSortFields.includes(sortBy)
       ? sortBy
@@ -40,9 +37,7 @@ class LogBookService {
 
     if (search) {
       where[Op.or] = [
-        { name: { [Op.iLike]: `%${search}%` } },
-        { myCallSign: { [Op.iLike]: `%${search}%` } },
-        { defaultCallSign: { [Op.iLike]: `%${search}%` } },
+        { name: { [Op.iLike]: `%${search}%` } }
       ];
     }
     if (country) {
@@ -56,13 +51,8 @@ class LogBookService {
         offset: (page - 1) * limit,
         order: [[sortColumn, order]],
         attributes: [
-          "name",
-          "default_call_sign",
-          "contact_count",
-          "default_mode",
-          "default_frequency",
-          "timestamp",
-          "last_contact_timestamp",
+          "name", 
+          "timestamp", 
         ],
       });
 
@@ -119,14 +109,7 @@ class LogBookService {
     const order = sortOrder === "ASC" ? "ASC" : "DESC";
     const allowedSortFields = [
       "timestamp",
-      "contact_time_stamp",
-      "their_callsign",
-      "my_call_sign",
-      "band",
-      "frequency",
-      "country",
-      "state",
-      "uid",
+      "name", 
     ];
     const sortColumn = allowedSortFields.includes(sortBy)
       ? sortBy

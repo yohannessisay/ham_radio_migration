@@ -21,8 +21,7 @@ class UserService {
       search = '',
       country = '',
     } = options;
-
-    // Validate sortOrder
+ 
     const order = sortOrder === 'ASC' ? 'ASC' : 'DESC';
 
     // Supported sort fields (prevent SQL injection)
@@ -31,14 +30,10 @@ class UserService {
       'firstName',
       'lastName',
       'callSign',
-      'email',
-      'country',
-      'state',
-      'city',
+      'email',   
     ];
     const sortColumn = allowedSortFields.includes(sortBy) ? sortBy : 'timestamp';
-
-    // Build WHERE clause for search
+ 
     const where: any = {};
     if (search) {
       where[Op.or] = [

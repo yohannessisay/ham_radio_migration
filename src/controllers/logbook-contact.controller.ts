@@ -8,12 +8,14 @@ class LogBookContactController {
    */
   async getLogBookContacts(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { page, limit, sortBy, sortOrder, search } = req.query as {
+      const { page, limit, sortBy, sortOrder, search, my_country, their_country } = req.query as {
         page?: string;
         limit?: string;
         sortBy?: string;
         sortOrder?: 'ASC' | 'DESC';
         search?: string;
+        my_country?: string;
+        their_country?: string;
       };
 
       const result = await LogBookContactService.getLogBookContacts({
@@ -22,13 +24,14 @@ class LogBookContactController {
         sortBy: sortBy || 'timestamp',
         sortOrder: sortOrder === 'ASC' ? 'ASC' : 'DESC',
         search: search || '',
+        my_country: my_country?.trim() || '',
+        their_country: their_country?.trim() || '',
       });
 
       if (!result.success) {
         return sendError({ reply, message: result.message });
       }
-
-      // Prepare pagination info if available
+ 
       let paginationInfo = undefined;
       if (result.pagination) {
         const currentPage = Number(page) || result.pagination.page || 1;

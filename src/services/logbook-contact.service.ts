@@ -12,7 +12,8 @@ class LogBookContactService {
     sortBy?: string;
     sortOrder?: "ASC" | "DESC";
     search?: string;
-    country?: string;
+    their_country?: string;
+    my_country?: string;
   }) {
     const {
       page = 1,
@@ -20,21 +21,16 @@ class LogBookContactService {
       sortBy = "timestamp",
       sortOrder = "DESC",
       search = "",
-      country = "",
+      their_country = "",
+      my_country = "",
     } = options;
 
     const order = sortOrder === "ASC" ? "ASC" : "DESC";
 
     const allowedSortFields = [
-      "timestamp",
-      "contact_time_stamp",
+      "timestamp", 
       "their_callsign",
-      "my_call_sign",
-      "band",
-      "frequency",
-      "country",
-      "state",
-      "uid",
+      "my_call_sign",  
     ];
     const sortColumn = allowedSortFields.includes(sortBy)
       ? sortBy
@@ -50,8 +46,22 @@ class LogBookContactService {
         { their_name: { [Op.iLike]: `%${search}%` } },
       ];
     }
-    if (country) {
-      where.country = { [Op.iLike]: `%${country}%` };
+    const countryConditions: any[] = [];
+    if (my_country?.trim()) {
+      countryConditions.push({
+        my_country: { [Op.iLike]: `%${my_country.trim()}%` },
+      });
+    }
+    if (their_country?.trim()) {
+      countryConditions.push({
+        their_country: { [Op.iLike]: `%${their_country.trim()}%` },
+      });
+    }
+
+    if (countryConditions.length === 1) {
+      Object.assign(where, countryConditions[0]);
+    } else if (countryConditions.length === 2) {
+      where[Op.and] = [...(where[Op.and] ?? []), ...countryConditions];
     }
 
     try {
@@ -64,6 +74,7 @@ class LogBookContactService {
           "their_callsign",
           "their_name",
           "their_country",
+          "my_country",
           "frequency",
           "user_mode",
           "timestamp",
@@ -118,7 +129,6 @@ class LogBookContactService {
       sortOrder = "DESC",
     } = options;
 
- 
     const safeLimit = Math.min(Math.max(Number(limit) || 10, 1), 100);
     const order = sortOrder === "ASC" ? "ASC" : "DESC";
     const allowedSortFields = [
@@ -132,7 +142,9 @@ class LogBookContactService {
       "state",
       "uid",
     ];
-    const sortColumn = allowedSortFields.includes(sortBy) ? sortBy : "timestamp";
+    const sortColumn = allowedSortFields.includes(sortBy)
+      ? sortBy
+      : "timestamp";
 
     try {
       const { count, rows: contacts } = await LogbookContacts.findAndCountAll({
