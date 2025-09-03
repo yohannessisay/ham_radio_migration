@@ -200,6 +200,7 @@ LogBook.init(
   {
     sequelize,
     tableName: 'LogBook',
+    schema: "public",
     timestamps: false, // We're managing timestamps manually
   }
 );

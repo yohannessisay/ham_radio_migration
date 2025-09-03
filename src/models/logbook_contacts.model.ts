@@ -395,6 +395,7 @@ LogbookContacts.init(
   },
   {
     sequelize,
+    schema: "public",
     tableName: 'LogBookContacts',
     timestamps: false,
   }
