@@ -9,10 +9,9 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
     "outDir": "./dist",
-    "rootDir": ".",          
-    "noEmit": true,         
+    "rootDir": ".",
+    "noEmit": false
   },
   "include": ["index.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
